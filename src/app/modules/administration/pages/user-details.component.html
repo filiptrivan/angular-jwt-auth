@@ -1,0 +1,46 @@
+<soft-card [title]="detailsTitle">
+    <soft-panel>
+        <panel-header title="Details" icon="pi pi-user"></panel-header>
+
+        <panel-body>
+            <form *ngIf="objectForm" [formGroup]="objectForm" class="grid">
+                <div class="col-3"> 
+                    <soft-textbox [control]="control('id')" [disabled]="true"></soft-textbox>
+                </div>
+                <div class="col-3">
+                    <soft-textbox [control]="control('version')" [disabled]="true"></soft-textbox>
+                </div>
+                <div class="col-3">
+                    <soft-textbox [control]="control('email')"></soft-textbox>
+                </div>
+                <div class="col-3">
+                    <soft-textbox [control]="control('username')"></soft-textbox>
+                </div>
+                <div class="col-3">
+                    <soft-textbox [control]="control('password')"></soft-textbox>
+                </div>
+                <div class="col-3">
+                    <soft-textbox [control]="control('roles')"></soft-textbox>
+                </div>
+                <div class="col-3">
+                    <soft-checkbox [control]="control('isDisabled')"></soft-checkbox>
+                </div>
+                <div class="col-3">
+                    <soft-calendar [control]="control('createdAt')" [disabled]="true"></soft-calendar>
+                </div>
+                <div class="col-3">
+                    <soft-calendar [control]="control('modifiedAt')" [disabled]="true"></soft-calendar>
+                </div>
+            </form>
+        </panel-body>
+
+       <panel-footer>
+            <p-button (onClick)="onSave()" label="Save" icon="pi pi-save"></p-button>
+            <soft-return-button></soft-return-button>
+            <div footerRight>
+                Updated 2 hours ago
+            </div>
+       </panel-footer>
+
+    </soft-panel>
+</soft-card>

@@ -1,0 +1,62 @@
+<div class="layout-topbar">
+    <a class="layout-topbar-logo" routerLink="/">
+      <span>SOFT IT</span>
+    </a>
+  
+    <button
+      #menubutton
+      class="p-link layout-menu-button layout-topbar-button"
+      (click)="layoutService.onMenuToggle()"
+    >
+      <i class="pi pi-bars"></i>
+    </button>
+  
+    <button
+      #topbarmenubutton
+      class="p-link layout-topbar-menu-button layout-topbar-button"
+      (click)="layoutService.showProfileSidebar()"
+    >
+      <i class="pi pi-ellipsis-v"></i>
+    </button>
+  
+    <div
+      #topbarmenu
+      class="layout-topbar-menu"
+      [ngClass]="{
+        'layout-topbar-menu-mobile-active':
+          layoutService.state.profileSidebarVisible
+      }"
+    >
+      <button
+        #topbarprofiledropdownmenubutton
+        class="p-link layout-topbar-button"
+        (click)="layoutService.showProfileDropdownSidebar()"
+      >
+        <div class="display-none-on-mobile" style="display: flex; gap: 15px; padding: 10px;">
+          <div>{{currentUser?.username}}</div>
+          <i class="pi pi-user"></i>
+        </div>
+        <i class="pi pi-user display-none-on-desktop"></i>
+        <span>{{currentUser?.username}}</span>
+      </button>
+      <div
+        #topbarprofiledropdownmenu
+        class="layout-topbar-profile-dropdown-menu"
+        [ngClass]="{
+          'layout-topbar-menu-mobile-active':
+            layoutService.state.profileDropdownSidebarVisible
+        }"
+        (document:click)="onDocumentClick($event)"
+      >
+        <!-- <div class="layout-topbar-profile-dropdown-button" routerLink="/internal-app/users/change-this-to-id">
+          <i class="pi pi-user"></i>
+          <span> Profile </span>
+        </div> -->
+        <div class="layout-topbar-profile-dropdown-button" (click)="logout()">
+          <i class="pi pi-sign-out"></i>
+          <span> Logout </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  

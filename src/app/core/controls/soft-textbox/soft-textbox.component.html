@@ -1,0 +1,16 @@
+<div class="flex flex-column gap-2">
+  <label>{{getTranslatedLabel()}}</label>
+  <input
+    [pTooltip]="getValidationErrrorMessages()"
+    tooltipPosition="bottom"
+    [tooltipDisabled]="control.valid"
+    tooltipStyleClass="soft-tooltip-invalid"
+    pInputText
+    [formControl]="control"
+    [id]="control.label"
+    (blur)="control.markAsDirty()"
+    />
+  </div>
+  
+  <!-- [class]="{'ng-invalid ng-dirty': control.valid}" -->
+  <!-- class="ng-invalid ng-dirty" -->

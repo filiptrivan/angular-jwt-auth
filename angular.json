@@ -34,10 +34,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/robots.txt"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/styles.scss",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css"
             ],
             "scripts": []
           },
@@ -59,8 +61,11 @@
             },
             "development": {
               "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
+							"extractLicenses": false,
+              "sourceMap": true,
+							"outputHashing": "all",
+							"namedChunks": true,
+              "aot": true
             }
           },
           "defaultConfiguration": "production"
@@ -93,11 +98,10 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/styles.scss"
             ],
             "scripts": []
           }
