@@ -1,6 +1,6 @@
-# SoftGeneratorSPA
+# Angular - PrimeNG JWT Auth
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.7.
+In this project, a frontend part for authentication was created, where the token is refreshed every time the page is refreshed or when it remains.
 
 ## Development server
 

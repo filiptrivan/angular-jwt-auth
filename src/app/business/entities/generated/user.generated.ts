@@ -3,7 +3,9 @@ import { Role } from "./role.generated";
 
 export class User extends BaseEntity
 {
-    username?: string;
+    testColumnForGrid?: string;
+	roles?: Role[];
+	username?: string;
 	email?: string;
 	password?: string;
 	isDisabled?: boolean;
@@ -11,37 +13,37 @@ export class User extends BaseEntity
 	id?: number;
 	createdAt?: Date;
 	modifiedAt?: Date;
-	testColumnForGrid?: string;
-	roles?: Role[];
 
     constructor(
     {
-        username,
+        testColumnForGrid,
+		roles,
+		username,
 		email,
 		password,
 		isDisabled,
 		version,
 		id,
 		createdAt,
-		modifiedAt,
-		testColumnForGrid,
-		roles
+		modifiedAt
     }:{
-        username?: string;
+        testColumnForGrid?: string;
+		roles?: Role[];
+		username?: string;
 		email?: string;
 		password?: string;
 		isDisabled?: boolean;
 		version?: number;
 		id?: number;
 		createdAt?: Date;
-		modifiedAt?: Date;
-		testColumnForGrid?: string;
-		roles?: Role[];     
+		modifiedAt?: Date;     
     } = {}
     ) {
         super('User'); 
 
-        this.username = username;
+        this.testColumnForGrid = testColumnForGrid;
+		this.roles = roles;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.isDisabled = isDisabled;
@@ -49,8 +51,6 @@ export class User extends BaseEntity
 		this.id = id;
 		this.createdAt = createdAt;
 		this.modifiedAt = modifiedAt;
-		this.testColumnForGrid = testColumnForGrid;
-		this.roles = roles;
     }
 
 }
