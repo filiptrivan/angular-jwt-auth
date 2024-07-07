@@ -4,12 +4,12 @@ In this project, a frontend part for authentication was created, where the token
  
 ## Triggering the refresh token method on the refresh on web page
  
-    ```
-       provide: APP_INITIALIZER,
-       useFactory: appInitializer,
-       multi: true,
-       deps: [AuthService]
-    ```
+```
+    provide: APP_INITIALIZER,
+    useFactory: appInitializer,
+    multi: true,
+    deps: [AuthService]
+```
  
 ## Triggering the refresh token method
  
