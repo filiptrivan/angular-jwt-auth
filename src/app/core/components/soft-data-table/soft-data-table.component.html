@@ -63,12 +63,12 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td [attr.colspan]="cols.length">No records found.</td>
+            <td [attr.colspan]="cols?.length">No records found.</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="loadingbody">
           <tr>
-            <td [attr.colspan]="cols.length">Loading data. Please wait.</td>
+            <td [attr.colspan]="cols?.length">Loading data. Please wait.</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="paginatorleft">

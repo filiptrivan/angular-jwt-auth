@@ -13,16 +13,6 @@ export function getValidator(formControl: SoftFormControl, typeName: string): Va
         case 'passwordLogin':
             return passwordLoginValidator(formControl);
 
-        case 'namePermission':
-            return namePermissionValidator(formControl);
-        case 'descriptionPermission':
-            return descriptionPermissionValidator(formControl);
-
-        case 'nameRole':
-            return nameRoleValidator(formControl);
-        case 'descriptionRole':
-            return descriptionRoleValidator(formControl);
-
         case 'usernameUser':
             return usernameUserValidator(formControl);
         case 'emailUser':
@@ -31,6 +21,16 @@ export function getValidator(formControl: SoftFormControl, typeName: string): Va
             return passwordUserValidator(formControl);
         case 'isDisabledUser':
             return isDisabledUserValidator(formControl);
+
+        case 'nameRole':
+            return nameRoleValidator(formControl);
+        case 'descriptionRole':
+            return descriptionRoleValidator(formControl);
+
+        case 'namePermission':
+            return namePermissionValidator(formControl);
+        case 'descriptionPermission':
+            return descriptionPermissionValidator(formControl);
 
         default:
             return null;
@@ -85,66 +85,6 @@ export function passwordLoginValidator(control: SoftFormControl): ValidatorFn {
         const passwordValid = notEmptyRule;
 
         return passwordValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-}
-
-
-export function namePermissionValidator(control: SoftFormControl): ValidatorFn {
-    return (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const min = 0;
-        const max = 255;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const nameValid = notEmptyRule && stringLengthRule;
-
-        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-}
-
-export function descriptionPermissionValidator(control: SoftFormControl): ValidatorFn {
-    return (): ValidationErrors | null => {
-        const value = control.value;
-
-        const min = 0;
-        const max = 1000;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const descriptionValid = stringLengthRule;
-
-        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-}
-
-
-export function nameRoleValidator(control: SoftFormControl): ValidatorFn {
-    return (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const min = 0;
-        const max = 255;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const nameValid = notEmptyRule && stringLengthRule;
-
-        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-}
-
-export function descriptionRoleValidator(control: SoftFormControl): ValidatorFn {
-    return (): ValidationErrors | null => {
-        const value = control.value;
-
-        const min = 0;
-        const max = 1000;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const descriptionValid = stringLengthRule;
-
-        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
     };
 }
 
@@ -204,6 +144,66 @@ export function isDisabledUserValidator(control: SoftFormControl): ValidatorFn {
         const isDisabledValid = notEmptyRule;
 
         return isDisabledValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
+    };
+}
+
+
+export function nameRoleValidator(control: SoftFormControl): ValidatorFn {
+    return (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+        const min = 0;
+        const max = 255;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const nameValid = notEmptyRule && stringLengthRule;
+
+        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+}
+
+export function descriptionRoleValidator(control: SoftFormControl): ValidatorFn {
+    return (): ValidationErrors | null => {
+        const value = control.value;
+
+        const min = 0;
+        const max = 1000;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const descriptionValid = stringLengthRule;
+
+        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+}
+
+
+export function namePermissionValidator(control: SoftFormControl): ValidatorFn {
+    return (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+        const min = 0;
+        const max = 255;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const nameValid = notEmptyRule && stringLengthRule;
+
+        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+}
+
+export function descriptionPermissionValidator(control: SoftFormControl): ValidatorFn {
+    return (): ValidationErrors | null => {
+        const value = control.value;
+
+        const min = 0;
+        const max = 1000;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const descriptionValid = stringLengthRule;
+
+        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
     };
 }
 
