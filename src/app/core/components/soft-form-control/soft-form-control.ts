@@ -1,22 +1,30 @@
-import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormControlOptions, FormGroup, ValidatorFn } from '@angular/forms';
 
-@Component({
-    selector: '',
-    template: '',
-    styles: []
-})
-export class SoftFormControl extends FormControl {
+export interface SoftValidatorFn extends ValidatorFn {
+    hasNotEmptyRule?: boolean;
+}
+
+export class SoftFormControl<T = any> extends FormControl<T> {
     public label: string;
+    public required: boolean;
+    private _softValidator: SoftValidatorFn | null;
 
-    constructor(formControl: FormControl) {
-        super(formControl, {updateOn: 'blur'});
+    constructor(formControl: FormControl, opts: FormControlOptions=null, required:boolean=false) {
+        opts = opts ?? {updateOn: 'blur'};
+        super(formControl, opts);
+        this.required = required;
      }
 
-    ngOnInit(){
+    public override get validator(): SoftValidatorFn | null {
+        return this._softValidator;
     }
-    
-    setLabel(name: string){
-        this.label = name;
+
+    public override set validator(validator: SoftValidatorFn | null) {
+        this._softValidator = validator;
+        this.setValidators(validator); 
     }
+}
+
+export class SoftFormGroup extends FormGroup {
+
 }

@@ -6,6 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styles: []
 })
 export class SoftCardComponent implements OnInit {
+  @Input() icon: string = 'pi pi-file-edit';
   @Input() title: string;
 
   constructor() { }

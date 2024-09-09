@@ -1,25 +1,35 @@
-import { Component, Inject, Input, LOCALE_ID, ViewChild } from '@angular/core';
+import { Component, Inject, Input, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SoftDeleteConfirmationComponent } from '../soft-delete-dialog/soft-delete-confirmation.component';
-import { formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PrimengModule } from 'src/app/layout/modules/primeng.module';
 
 @Component({
   selector: 'soft-data-table',
   templateUrl: './soft-data-table.component.html',
   styles: [],
+  imports: [
+    FormsModule,
+    CommonModule,
+    PrimengModule,
+    SoftDeleteConfirmationComponent
+  ],
+  standalone: true,
 })
-export class SoftDataTableComponent {
+export class SoftDataTableComponent implements OnInit {
   @ViewChild('dt') table: Table;
   @Input() tableTitle: string;
+  @Input() tableIcon: string = 'pi pi-list';
   items: any[];
   rows: number = 10;
   @Input() cols: Column[];
-  @Input() controllerName: string;
   @Input() objectName: string;
+  @Input() controllerName: string;
   showPaginator: boolean = true;
   isLazyLoadTable: boolean = true;
   totalRecords: number;
@@ -48,9 +58,14 @@ export class SoftDataTableComponent {
     @Inject(LOCALE_ID) private locale: string
   ) {}
 
+  ngOnInit(): void {
+      if (this.controllerName == null)
+        this.controllerName = this.objectName;
+  }
+
   onLazyLoad(event: TableLazyLoadEvent) {
     this.lastLazyLoadEvent = event;
-    this.apiService.loadListForGrid(this.controllerName,this.objectName,event).subscribe({
+    this.apiService.loadListForTable(this.controllerName,this.objectName,event).subscribe({
       next: (res) => {
         this.items = res.data;
         this.totalRecords = res.totalRecords;
@@ -99,7 +114,7 @@ export class SoftDataTableComponent {
   getColMatchMode(filterType: string){
     switch (filterType) {
         case 'text':
-          return null;
+          return 'contains';
         case 'date':
           return null;
         case 'multiselect':
@@ -147,7 +162,7 @@ export class SoftDataTableComponent {
   getClassForAction(action: Action): string{
     switch(action.name){
       case 'Details':
-        return 'pi pi-reply text-lg cursor-pointer';
+        return 'pi pi-pencil text-lg cursor-pointer primary-color';
       case 'Delete':
         return 'pi pi-trash text-lg text-red-500 cursor-pointer';
       default:

@@ -19,6 +19,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { DialogService } from 'primeng/dynamicdialog';
 import { PanelModule } from 'primeng/panel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { PanelModule } from 'primeng/panel';
     RadioButtonModule,
     RippleModule,
     PanelModule,
+    AutoCompleteModule,
   ],
   exports: [
     TableModule,
@@ -64,6 +66,7 @@ import { PanelModule } from 'primeng/panel';
     RadioButtonModule,
     RippleModule,
     PanelModule,
+    AutoCompleteModule
   ],
   declarations: [],
   providers: [

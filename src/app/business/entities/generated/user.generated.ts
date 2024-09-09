@@ -5,10 +5,10 @@ export class User extends BaseEntity
 {
     testColumnForGrid?: string;
 	roles?: Role[];
-	username?: string;
 	email?: string;
 	password?: string;
 	isDisabled?: boolean;
+	hasLoggedInWithExternalProvider?: boolean;
 	version?: number;
 	id?: number;
 	createdAt?: Date;
@@ -18,10 +18,10 @@ export class User extends BaseEntity
     {
         testColumnForGrid,
 		roles,
-		username,
 		email,
 		password,
 		isDisabled,
+		hasLoggedInWithExternalProvider,
 		version,
 		id,
 		createdAt,
@@ -29,10 +29,10 @@ export class User extends BaseEntity
     }:{
         testColumnForGrid?: string;
 		roles?: Role[];
-		username?: string;
 		email?: string;
 		password?: string;
 		isDisabled?: boolean;
+		hasLoggedInWithExternalProvider?: boolean;
 		version?: number;
 		id?: number;
 		createdAt?: Date;
@@ -43,10 +43,10 @@ export class User extends BaseEntity
 
         this.testColumnForGrid = testColumnForGrid;
 		this.roles = roles;
-		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.isDisabled = isDisabled;
+		this.hasLoggedInWithExternalProvider = hasLoggedInWithExternalProvider;
 		this.version = version;
 		this.id = id;
 		this.createdAt = createdAt;

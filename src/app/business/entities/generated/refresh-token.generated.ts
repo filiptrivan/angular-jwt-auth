@@ -1,10 +1,9 @@
 import { BaseEntity } from "../../../core/entities/base-entity";
-import { string } from "./string.generated";
+
 
 export class RefreshToken extends BaseEntity
 {
-    username?: string;
-	email?: string;
+    email?: string;
 	roles?: string[];
 	ipAddress?: string;
 	tokenString?: string;
@@ -12,15 +11,13 @@ export class RefreshToken extends BaseEntity
 
     constructor(
     {
-        username,
-		email,
+        email,
 		roles,
 		ipAddress,
 		tokenString,
 		expireAt
     }:{
-        username?: string;
-		email?: string;
+        email?: string;
 		roles?: string[];
 		ipAddress?: string;
 		tokenString?: string;
@@ -29,8 +26,7 @@ export class RefreshToken extends BaseEntity
     ) {
         super('RefreshToken'); 
 
-        this.username = username;
-		this.email = email;
+        this.email = email;
 		this.roles = roles;
 		this.ipAddress = ipAddress;
 		this.tokenString = tokenString;

@@ -15,6 +15,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from './business/services/api/api.service';
 import { BaseService } from './core/services/base-service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,7 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
     AppLayoutModule,
     MessagesModule,
     ToastModule,
+    SocialLoginModule,
     NgxSpinnerModule.forRoot({ type: 'ball-clip-rotate-multiple' }),
     CoreModule,
   ],
@@ -39,6 +43,26 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
     {
     provide: ErrorHandler,
     useClass: SoftErrorHandler,
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.googleClientId, {
+                scopes: 'email',
+                // plugin_name: 'the name of the Google OAuth project you created'
+              }
+            )
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig
     },
     ApiService,
     BaseService,

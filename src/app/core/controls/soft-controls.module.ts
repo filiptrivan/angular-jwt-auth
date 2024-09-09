@@ -1,35 +1,44 @@
 import { NgModule } from '@angular/core';
-import { SoftTextboxModule } from './soft-textbox/soft-textbox.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SoftCheckboxModule } from './soft-checkbox/soft-checkbox.module';
 import { SoftCalendarModule } from './soft-calendar/soft-calendar.module';
-import { SoftReturnButtonModule } from '../components/soft-buttons/soft-return-button.module';
 import { SoftPanelsModule } from '../components/soft-panels/soft-panels.module';
-import { SoftPasswordModule } from './soft-password/soft-password.module';
+import { SoftReturnButtonComponent } from '../components/soft-buttons/soft-return-button.component';
+import { SoftMultiAutocompleteComponent } from './soft-multiautocomplete/soft-multiautocomplete.component';
+import { SoftPasswordComponent } from './soft-password/soft-password.component';
+import { SoftTextboxComponent } from './soft-textbox/soft-textbox.component';
+import { SoftCheckboxComponent } from './soft-checkbox/soft-checkbox.component';
+import { SoftMultiselectComponent } from './soft-multiselect/soft-multiselect.component';
+import { SoftTextareaComponent } from './soft-textarea/soft-textarea.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    SoftTextboxModule,
-    SoftCheckboxModule,
+    SoftTextboxComponent,
+    SoftTextareaComponent,
+    SoftCheckboxComponent,
     SoftCalendarModule,
-    SoftReturnButtonModule,
+    SoftReturnButtonComponent,
     SoftPanelsModule,
-    SoftPasswordModule
+    SoftPasswordComponent,
+    SoftMultiAutocompleteComponent,
+    SoftMultiselectComponent
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    SoftTextboxModule,
-    SoftCheckboxModule,
+    SoftTextboxComponent,
+    SoftTextareaComponent,
+    SoftCheckboxComponent,
     SoftCalendarModule,
-    SoftReturnButtonModule,
+    SoftReturnButtonComponent,
     SoftPanelsModule,
-    SoftPasswordModule
+    SoftPasswordComponent,
+    SoftMultiAutocompleteComponent,
+    SoftMultiselectComponent
   ],
   declarations: [
   ],

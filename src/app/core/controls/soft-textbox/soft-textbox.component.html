@@ -1,5 +1,10 @@
+<!-- Can't put (onBlur) in this control -->
+
 <div class="flex flex-column gap-2">
-  <label>{{getTranslatedLabel()}}</label>
+  <div>
+    <label>{{getTranslatedLabel()}}</label>
+    <required *ngIf="control.required"></required>
+  </div>
   <input
     [pTooltip]="getValidationErrrorMessages()"
     tooltipPosition="bottom"
@@ -11,6 +16,3 @@
     (blur)="control.markAsDirty()"
     />
   </div>
-  
-  <!-- [class]="{'ng-invalid ng-dirty': control.valid}" -->
-  <!-- class="ng-invalid ng-dirty" -->

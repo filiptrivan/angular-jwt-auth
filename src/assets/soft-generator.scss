@@ -1,3 +1,5 @@
+@import './layout/styles/layout/variables';
+
 .c-dashboard-item {
 	position: relative;
 	display: flex;
@@ -121,4 +123,22 @@
     	border-bottom-left-radius: 12px;
 		padding: 1rem;
 	}
+}
+
+.disabled{
+	background-color: $disabled;
+}
+
+.primary-color{
+	color: $primaryColor;
+}
+
+.separator{
+	border-top: 1px solid $primaryColor;
+	width: 100%;
+}
+
+.google-signin-button {
+	width: 100%;
+	max-width: 300px; /* Adjust maximum width */
 }

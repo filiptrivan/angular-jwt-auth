@@ -23,8 +23,4 @@ export class DashboardComponent implements OnInit {
   auth(){
     this.apiService.getCurrentUser().subscribe();
   }
-
-  notAuth(){
-    this.apiService.getCurrentUserNotAuth().subscribe();
-  }
 }

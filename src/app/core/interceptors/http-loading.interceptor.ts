@@ -11,10 +11,15 @@ export class HttpLoadingInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.spinner.show();
+    const skipSpinner = request.params.has('X-Skip-Spinner'); // FT: Using this for multiautocomplete, autocomplete, dropdown, table etc...
+
+    if (!skipSpinner)
+      this.spinner.show();
+
     return next.handle(request).pipe(
       finalize(() => {
-        this.spinner.hide();
+        if (!skipSpinner)
+          this.spinner.hide();
       })
     ) as Observable<HttpEvent<any>>;
   }

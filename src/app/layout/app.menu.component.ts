@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
+import { PrimeIcons } from 'primeng/api';
 
 @Component({
     selector: 'app-menu',
@@ -56,8 +57,13 @@ export class AppMenuComponent implements OnInit {
                         items: [
                             {
                                 label: 'Users',
-                                icon: 'pi pi-fw pi-user',
+                                icon: PrimeIcons.USER,
                                 routerLink: ['/administration/users']
+                            },
+                            {
+                                label: 'Roles',
+                                icon: PrimeIcons.ID_CARD,
+                                routerLink: ['/administration/roles']
                             }
                         ]
                     },

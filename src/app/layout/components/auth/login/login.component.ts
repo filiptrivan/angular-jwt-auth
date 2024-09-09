@@ -7,22 +7,16 @@ import { BaseForm } from '../../../../core/components/base-form/base-form';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Login } from 'src/app/business/entities/generated/login.generated';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styles: [`
-        :host ::ng-deep .pi-eye,
-        :host ::ng-deep .pi-eye-slash {
-            transform:scale(1.6);
-            margin-right: 1rem;
-            color: var(--primary-color) !important;
-        }
-    `]
 })
 export class LoginComponent extends BaseForm<Login> implements OnInit {
+    companyName: string = environment.companyName;
+    usersCanRegister: boolean = environment.usersCanRegister;
     private subscription: Subscription | null = null;
-    valCheck: string[] = ['remember'];
 
     constructor(
       protected override differs: KeyValueDiffers,
@@ -38,17 +32,7 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
     }
 
     ngOnInit(){
-        let url = this.route.snapshot.url[0]?.path ?? window.location.pathname
-        this.subscription = this.authService.user$.subscribe((x) => {
-            if (url === 'auth/login') {
-              const accessToken = localStorage.getItem('access_token');
-              const refreshToken = localStorage.getItem('refresh_token');
-              if (x && accessToken && refreshToken) {
-                // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-                this.router.navigate(['/']);
-              }
-            }
-          });
+        this.subscription = this.authService.navigateToDashboardIfLoggedIn();
         this.init(new Login());
     }
     
@@ -57,26 +41,23 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
     }
 
     login() {
-      if (this.objectForm.invalid) {
-        Object.keys(this.objectForm.controls).forEach(key => {
-          this.objectForm.controls[key].markAsDirty();
-        });
-        this.messageService.warningMessage(
-          $localize`:@@YouHaveSomeInvalidFieldsTitle:You have some invalid fields`, 
-          $localize`:@@YouHaveSomeInvalidFieldsDescription:Some of the fields on the form are not valid, please check which ones and try again.`
-        );
-  
-        return;
-      }
+        let isFormGroupValid: boolean = this.checkFormGroupValidity();
+        if (isFormGroupValid == false) return;
         // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService
-          .login(this.model.password, this.model.username)
-          .subscribe(()=>{
-              this.router.navigate(['/']);
-          });
-      }
+        this.authService.login(this.model).subscribe(()=>{
+            this.router.navigate(['/']);
+        });
+    }
+
+    onGoogleSignIn(){
+        
+    }
+
+    goToRegistrationPage(){
+        
+    }
 
     ngOnDestroy(): void {
         this.subscription?.unsubscribe();
-      }
+    }
 }

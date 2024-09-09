@@ -1,12 +1,15 @@
-import { SoftMessageService } from './soft-message.service';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
 import { map, tap, delay, finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoginResult } from 'src/app/business/entities/generated/login-result.generated';
 import { User } from 'src/app/business/entities/generated/user.generated';
+import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
+import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
+import { ExternalProvider } from 'src/app/business/entities/generated/external-provider.generated';
+import { Login } from 'src/app/business/entities/generated/login.generated';
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +20,31 @@ export class AuthService implements OnDestroy {
   private _user = new BehaviorSubject<User | null>(null);
   user$ = this._user.asObservable();
 
+  // Google auth
+  private authChangeSub = new Subject<boolean>();
+  private extAuthChangeSub = new Subject<SocialUser>();
+  public authChanged = this.authChangeSub.asObservable();
+  public extAuthChanged = this.extAuthChangeSub.asObservable();
+  
   constructor(
     private router: Router,
     private http: HttpClient,
-    private softMessageService: SoftMessageService
+    private route: ActivatedRoute,
+    private externalAuthService: SocialAuthService
   ) {
     window.addEventListener('storage', this.storageEventListener.bind(this));
+
+    // Google auth
+    this.externalAuthService.authState.subscribe((user) => {
+      const externalAuth: ExternalProvider = {
+        provider: user.provider,
+        idToken: user.idToken
+      }
+      this.loginExternal(externalAuth).subscribe(()=>{
+        this.router.navigate(['/']);
+      });
+      this.extAuthChangeSub.next(user);
+    })
   }
 
   private storageEventListener(event: StorageEvent) {
@@ -34,46 +56,34 @@ export class AuthService implements OnDestroy {
       if (event.key === 'login-event') {
         this.stopTokenTimer();
         this.http
-          .get<User>(`${this.apiUrl}/User/GetCurrentUser`)
+          .get<User>(`${this.apiUrl}/Auth/GetCurrentUser`)
           .subscribe((user: User) => { // TODO FT: send everything that user has with token
             this._user.next({
-              username: user.username,
               roles: user.roles,
-              email: user.email,
-              pipedProperties: []
+              email: user.email
             });
           });
       }
     }
   }
 
-  ngOnDestroy(): void {
-    window.removeEventListener('storage', this.storageEventListener.bind(this));
+  login(body: Login): Observable<LoginResult> {
+    let loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/Login`, body)
+    return this.handleLoginResult(loginResultObservable);
   }
 
-  login(password: string, username?: string, email?: string) {
-    // TODO FT: izbaci ovo i implementiraj fluent validation
-    // if (username == '' && email == '') {
-    //   this.softMessageService.warningMessage(
-    //     'Wrong password, username or email.',
-    //     'Authentication error.'
-    //   );
-    //   return null;
-    // } else 
-    
-    return this.http
-      .post<LoginResult>(`${this.apiUrl}/Auth/Login`, {
-        username,
-        email,
-        password,
-      })
-      .pipe(
+  loginExternal(body: ExternalProvider): Observable<LoginResult> {
+    console.log("object")
+    let loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/LoginExternal`, body);
+    return this.handleLoginResult(loginResultObservable);
+  }
+
+  handleLoginResult(loginResultObservable: Observable<LoginResult>){
+    return loginResultObservable.pipe(
         map((loginResult: LoginResult) => {
           this._user.next({
-            username: loginResult.username,
             email: loginResult.email,
-            roles: loginResult.roles,
-            pipedProperties: []
+            roles: loginResult.roles
           });
           this.setLocalStorage(loginResult);
           this.startTokenTimer();
@@ -108,10 +118,8 @@ export class AuthService implements OnDestroy {
       .pipe(
         map((loginResult) => {
           this._user.next({
-            username: loginResult.username,
             email: loginResult.email,
-            roles: loginResult.roles,
-            pipedProperties: []
+            roles: loginResult.roles
           });
           this.setLocalStorage(loginResult);
           this.startTokenTimer();
@@ -160,5 +168,27 @@ export class AuthService implements OnDestroy {
 
   private stopTokenTimer() {
     this.timer?.unsubscribe();
+  }
+
+  navigateToDashboardIfLoggedIn() {
+    let url = this.route.snapshot.url[0]?.path ?? window.location.pathname
+    return this.user$.subscribe((x) => {
+      if (url === 'auth/login') {
+        const accessToken = localStorage.getItem('access_token');
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (x && accessToken && refreshToken) {
+          // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+          this.router.navigate(['/']);
+        }
+      }
+    });
+  }
+
+  logoutGoogle = () => {
+    this.externalAuthService.signOut();
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('storage', this.storageEventListener.bind(this));
   }
 }

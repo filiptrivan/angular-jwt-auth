@@ -4,25 +4,28 @@ import { BaseEntity } from "../../../core/entities/base-entity";
 export class Login extends BaseEntity
 {
     password?: string;
-	username?: string;
+	email?: string;
 	ipAddress?: string;
 	isSuccessful?: boolean;
+	isExternal?: boolean;
 	id?: number;
 	createdAt?: Date;
 
     constructor(
     {
         password,
-		username,
+		email,
 		ipAddress,
 		isSuccessful,
+		isExternal,
 		id,
 		createdAt
     }:{
         password?: string;
-		username?: string;
+		email?: string;
 		ipAddress?: string;
 		isSuccessful?: boolean;
+		isExternal?: boolean;
 		id?: number;
 		createdAt?: Date;     
     } = {}
@@ -30,9 +33,10 @@ export class Login extends BaseEntity
         super('Login'); 
 
         this.password = password;
-		this.username = username;
+		this.email = email;
 		this.ipAddress = ipAddress;
 		this.isSuccessful = isSuccessful;
+		this.isExternal = isExternal;
 		this.id = id;
 		this.createdAt = createdAt;
     }

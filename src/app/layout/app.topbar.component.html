@@ -33,11 +33,11 @@
         (click)="layoutService.showProfileDropdownSidebar()"
       >
         <div class="display-none-on-mobile" style="display: flex; gap: 15px; padding: 10px;">
-          <div>{{currentUser?.username}}</div>
+          <div>{{currentUser?.email}}</div>
           <i class="pi pi-user"></i>
         </div>
         <i class="pi pi-user display-none-on-desktop"></i>
-        <span>{{currentUser?.username}}</span>
+        <span>{{currentUser?.email}}</span>
       </button>
       <div
         #topbarprofiledropdownmenu

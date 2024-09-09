@@ -3,22 +3,19 @@ import { Role } from "./role.generated";
 
 export class LoginResult extends BaseEntity
 {
-    username?: string;
-	email?: string;
+    email?: string;
 	accessToken?: string;
 	refreshToken?: string;
 	roles?: Role[];
 
     constructor(
     {
-        username,
-		email,
+        email,
 		accessToken,
 		refreshToken,
 		roles
     }:{
-        username?: string;
-		email?: string;
+        email?: string;
 		accessToken?: string;
 		refreshToken?: string;
 		roles?: Role[];     
@@ -26,8 +23,7 @@ export class LoginResult extends BaseEntity
     ) {
         super('LoginResult'); 
 
-        this.username = username;
-		this.email = email;
+        this.email = email;
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 		this.roles = roles;
