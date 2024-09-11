@@ -1,6 +1,6 @@
 <div class="layout-topbar">
     <a class="layout-topbar-logo" routerLink="/">
-      <span>SOFT IT</span>
+      <span>{{companyName.toLocaleUpperCase()}}</span>
     </a>
   
     <button
@@ -11,51 +11,43 @@
       <i class="pi pi-bars"></i>
     </button>
   
-    <button
-      #topbarmenubutton
-      class="p-link layout-topbar-menu-button layout-topbar-button"
-      (click)="layoutService.showProfileSidebar()"
-    >
-      <i class="pi pi-ellipsis-v"></i>
-    </button>
-  
     <div
       #topbarmenu
-      class="layout-topbar-menu"
-      [ngClass]="{
-        'layout-topbar-menu-mobile-active':
-          layoutService.state.profileSidebarVisible
-      }"
-    >
-      <button
+      class="layout-topbar-menu-button layout-topbar-men profile-button"
+      >
+      <div
         #topbarprofiledropdownmenubutton
-        class="p-link layout-topbar-button"
         (click)="layoutService.showProfileDropdownSidebar()"
       >
-        <div class="display-none-on-mobile" style="display: flex; gap: 15px; padding: 10px;">
-          <div>{{currentUser?.email}}</div>
-          <i class="pi pi-user"></i>
-        </div>
-        <i class="pi pi-user display-none-on-desktop"></i>
-        <span>{{currentUser?.email}}</span>
-      </button>
+          <p-avatar 
+            [label]="avatarLabel"
+            size="large"
+            [style]="{ 'background-color': 'var(--primary-light-color)', 'color': 'var(--primary-dark-color)', 'cursor': 'pointer' }"
+            />
+      </div>
       <div
         #topbarprofiledropdownmenu
-        class="layout-topbar-profile-dropdown-menu"
-        [ngClass]="{
-          'layout-topbar-menu-mobile-active':
-            layoutService.state.profileDropdownSidebarVisible
-        }"
         (document:click)="onDocumentClick($event)"
       >
-        <!-- <div class="layout-topbar-profile-dropdown-button" routerLink="/internal-app/users/change-this-to-id">
-          <i class="pi pi-user"></i>
-          <span> Profile </span>
-        </div> -->
-        <div class="layout-topbar-profile-dropdown-button" (click)="logout()">
-          <i class="pi pi-sign-out"></i>
-          <span> Logout </span>
+      <div *ngIf="layoutService.state.profileDropdownSidebarVisible" style="width: 280px; position: absolute; right: 26px; top: 60px; padding: 15px;" class="card">
+        <div style="display: flex; flex-direction: column; justify-content: center; text-align: center; gap: 10px;">
+          <p-avatar 
+            [label]="avatarLabel"
+            size="xlarge"
+            [style]="{ 'background-color': 'var(--primary-light-color)', 'color': 'var(--primary-dark-color)', 'cursor': 'pointer' }"
+            />
+          <div>{{currentUser?.email}}</div>
         </div>
+        <div style="margin-top: 15px;">
+          <div *ngFor="let item of menuItems" [style]="item.showSeparator ? 'margin-top: 5px;' : ''">
+            <div *ngIf="item.showSeparator" class="gray-separator"></div>
+            <div (click)="item.onClick()" class="hover-card" style="display: flex; align-items: center; gap: 5px; margin-top: 5px;">
+              <i class="pi {{item.icon}} primary-color" style="font-size: 16px;"></i>
+              <div> {{item.label}} </div>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>

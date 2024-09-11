@@ -1,8 +1,17 @@
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from './../core/services/auth.service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { User } from '../business/entities/generated/user.generated';
+import { environment } from 'src/environments/environment';
+import { filter } from 'rxjs';
+
+interface SoftMenuItem {
+  label?: string;
+  icon?: string;
+  showSeparator?: boolean;
+  onClick?: () => void
+}
 
 @Component({
     selector: 'app-topbar',
@@ -10,27 +19,57 @@ import { User } from '../business/entities/generated/user.generated';
 })
 export class AppTopBarComponent {
     currentUser: User;
-    items!: MenuItem[];
+    menuItems: SoftMenuItem[] = [
+      {
+        label: $localize`:@@Profile:Profile`,
+        icon: 'pi-user',
+        showSeparator: true,
+        onClick: () => {
+          this.goToUser();
+        }
+      },
+      {
+        label: $localize`:@@Settings:Settings`,
+        icon: 'pi-cog'
+      },
+      {
+        label: $localize`:@@Logout:Logout`,
+        icon: 'pi-sign-out',
+        showSeparator: true,
+        onClick: () => {
+          this.logout();
+        }
+      },
+    ];
+    avatarLabel: string;
+    companyName: string = environment.companyName;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
-
-    @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
     @ViewChild('topbarprofiledropdownmenubutton') topbarProfileDropdownMenuButton!: ElementRef;
 
-    constructor(public layoutService: LayoutService, private elRef: ElementRef, private authService: AuthService) { }
+    constructor(public layoutService: LayoutService, private authService: AuthService, protected router: Router) { }
 
   ngOnInit(){
     this.authService.user$.subscribe(res => {
       this.currentUser = res;
+      this.avatarLabel = res.email.charAt(0).toLocaleUpperCase();
     });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.layoutService.state.profileDropdownSidebarVisible = false;
+      });
   }
     
-  logout()
-  {
+  logout(){
     this.authService.logout();
+  }
+
+  goToUser(){
+    this.router.navigateByUrl(`/administration/users/${this.currentUser.id}`);
   }
 
   onDocumentClick(event: any) {

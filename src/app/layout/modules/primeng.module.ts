@@ -20,6 +20,8 @@ import { RippleModule } from 'primeng/ripple';
 import { DialogService } from 'primeng/dynamicdialog';
 import { PanelModule } from 'primeng/panel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 @NgModule({
   imports: [
@@ -44,6 +46,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     RippleModule,
     PanelModule,
     AutoCompleteModule,
+    AvatarModule,
+    AvatarGroupModule
   ],
   exports: [
     TableModule,
@@ -66,7 +70,9 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     RadioButtonModule,
     RippleModule,
     PanelModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    AvatarModule,
+    AvatarGroupModule
   ],
   declarations: [],
   providers: [

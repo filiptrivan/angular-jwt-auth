@@ -70,15 +70,15 @@
       margin-left: 2rem;
     }
   
-    .layout-topbar-menu-button {
-      display: none;
+    // .layout-topbar-menu-button {
+    //   display: none;
   
-      i {
-        font-size: 1.25rem;
-      }
-    }
+    //   i {
+    //     font-size: 1.25rem;
+    //   }
+    // }
   
-    .layout-topbar-menu {
+    .profile-button {
       margin: 0 0 0 auto;
       padding: 0;
       list-style: none;
@@ -109,7 +109,7 @@
         order: 1;
       }
   
-      .layout-topbar-menu-button {
+      .profile-button {
         // burger meni
         border-radius: 50%;
         width: 3rem;

@@ -4,32 +4,16 @@ export function getTranslatedLabelSecurity(name: string): string
     {
         case 'accessToken':
             return $localize`:@@AccessToken:AccessToken`;
-        case 'refreshToken':
-            return $localize`:@@RefreshToken:RefreshToken`;
-        case 'provider':
-            return $localize`:@@Provider:Provider`;
-        case 'idToken':
-            return $localize`:@@IdToken:IdToken`;
-        case 'password':
-            return $localize`:@@Password:Password`;
-        case 'testColumnForGrid':
-            return $localize`:@@TestColumnForGrid:TestColumnForGrid`;
-        case 'roles':
-            return $localize`:@@Roles:Roles`;
-        case 'email':
-            return $localize`:@@Email:Email`;
-        case 'passwordConfirmation':
-            return $localize`:@@PasswordConfirmation:PasswordConfirmation`;
         case 'user':
             return $localize`:@@User:User`;
-        case 'role':
-            return $localize`:@@Role:Role`;
+        case 'userEmail':
+            return $localize`:@@UserEmail:UserEmail`;
+        case 'refreshToken':
+            return $localize`:@@RefreshToken:RefreshToken`;
+        case 'email':
+            return $localize`:@@Email:Email`;
         case 'ipAddress':
             return $localize`:@@IpAddress:IpAddress`;
-        case 'tokenString':
-            return $localize`:@@TokenString:TokenString`;
-        case 'expireAt':
-            return $localize`:@@ExpireAt:ExpireAt`;
         case 'isSuccessful':
             return $localize`:@@IsSuccessful:IsSuccessful`;
         case 'isExternal':
@@ -46,10 +30,30 @@ export function getTranslatedLabelSecurity(name: string): string
             return $localize`:@@Version:Version`;
         case 'modifiedAt':
             return $localize`:@@ModifiedAt:ModifiedAt`;
+        case 'password':
+            return $localize`:@@Password:Password`;
         case 'isDisabled':
             return $localize`:@@IsDisabled:IsDisabled`;
         case 'hasLoggedInWithExternalProvider':
             return $localize`:@@HasLoggedInWithExternalProvider:HasLoggedInWithExternalProvider`;
+        case 'provider':
+            return $localize`:@@Provider:Provider`;
+        case 'idToken':
+            return $localize`:@@IdToken:IdToken`;
+        case 'browser':
+            return $localize`:@@Browser:Browser`;
+        case 'testColumnForGrid':
+            return $localize`:@@TestColumnForGrid:TestColumnForGrid`;
+        case 'roles':
+            return $localize`:@@Roles:Roles`;
+        case 'passwordConfirmation':
+            return $localize`:@@PasswordConfirmation:PasswordConfirmation`;
+        case 'role':
+            return $localize`:@@Role:Role`;
+        case 'tokenString':
+            return $localize`:@@TokenString:TokenString`;
+        case 'expireAt':
+            return $localize`:@@ExpireAt:ExpireAt`;
         default:
             return null;
     }

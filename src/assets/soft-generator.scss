@@ -1,5 +1,20 @@
 @import './layout/styles/layout/variables';
 
+.table-header {
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center;
+}
+
+@media (max-width: 640px) {
+	.table-header {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+		gap: 14px;
+	}
+}
+
 .c-dashboard-item {
 	position: relative;
 	display: flex;
@@ -138,7 +153,22 @@
 	width: 100%;
 }
 
+.gray-separator{
+	border-top: 1px solid $shade400;
+	width: 100%;
+}
+
 .google-signin-button {
 	width: 100%;
 	max-width: 300px; /* Adjust maximum width */
+}
+
+.hover-card {
+	padding: 10px;
+	border-radius: 12px;
+	cursor: pointer;
+}
+
+.hover-card:hover {
+	background-color: $disabled;
 }

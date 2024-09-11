@@ -10,6 +10,7 @@ import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
 import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
 import { ExternalProvider } from 'src/app/business/entities/generated/external-provider.generated';
 import { Login } from 'src/app/business/entities/generated/login.generated';
+import { RefreshTokenRequest } from 'src/app/business/entities/generated/refresh-token-request.generated';
 
 @Injectable({
   providedIn: 'root',
@@ -68,13 +69,16 @@ export class AuthService implements OnDestroy {
   }
 
   login(body: Login): Observable<LoginResult> {
-    let loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/Login`, body)
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    const loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/Login`, body)
     return this.handleLoginResult(loginResultObservable);
   }
 
   loginExternal(body: ExternalProvider): Observable<LoginResult> {
-    console.log("object")
-    let loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/LoginExternal`, body);
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    const loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/LoginExternal`, body);
     return this.handleLoginResult(loginResultObservable);
   }
 
@@ -82,8 +86,8 @@ export class AuthService implements OnDestroy {
     return loginResultObservable.pipe(
         map((loginResult: LoginResult) => {
           this._user.next({
+            id: loginResult.userId,
             email: loginResult.email,
-            roles: loginResult.roles
           });
           this.setLocalStorage(loginResult);
           this.startTokenTimer();
@@ -113,13 +117,17 @@ export class AuthService implements OnDestroy {
       return of(null);
     }
 
+    const browserId = this.getBrowserId();
+    let body: RefreshTokenRequest = new RefreshTokenRequest();
+    body.browserId = browserId;
+    body.refreshToken = refreshToken;
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/Auth/RefreshToken`, { refreshToken })
+      .post<LoginResult>(`${this.apiUrl}/Auth/RefreshToken`, body)
       .pipe(
         map((loginResult) => {
           this._user.next({
-            email: loginResult.email,
-            roles: loginResult.roles
+            id: loginResult.userId,
+            email: loginResult.email
           });
           this.setLocalStorage(loginResult);
           this.startTokenTimer();
@@ -128,9 +136,9 @@ export class AuthService implements OnDestroy {
       );
   }
 
-  setLocalStorage(x: LoginResult) {
-    localStorage.setItem('access_token', x.accessToken);
-    localStorage.setItem('refresh_token', x.refreshToken);
+  setLocalStorage(loginResult: LoginResult) {
+    localStorage.setItem('access_token', loginResult.accessToken);
+    localStorage.setItem('refresh_token', loginResult.refreshToken);
     localStorage.setItem('login-event', 'login' + Math.random());
   }
 
@@ -138,6 +146,15 @@ export class AuthService implements OnDestroy {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.setItem('logout-event', 'logout' + Math.random());
+  }
+
+  getBrowserId() {
+    let browserId = localStorage.getItem('browser_id'); // FT: We don't need to remove this from the local storage ever, only if the user manuely deletes it, we will handle it
+    if (!browserId) {
+      browserId = crypto.randomUUID();
+      localStorage.setItem('browser_id', browserId);
+    }
+    return browserId;
   }
 
   isUserAuthenticated(){

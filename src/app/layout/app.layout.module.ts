@@ -12,6 +12,7 @@ import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
 import { PrimengModule } from './modules/primeng.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { PrimengModule } from './modules/primeng.module';
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        BrowserModule,
         RouterModule,
         AppConfigModule,
         PrimengModule

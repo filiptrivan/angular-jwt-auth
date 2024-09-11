@@ -1,32 +1,32 @@
 import { BaseEntity } from "../../../core/entities/base-entity";
-import { Role } from "./role.generated";
+
 
 export class LoginResult extends BaseEntity
 {
-    email?: string;
+    userId?: number;
+	email?: string;
 	accessToken?: string;
 	refreshToken?: string;
-	roles?: Role[];
 
     constructor(
     {
-        email,
+        userId,
+		email,
 		accessToken,
-		refreshToken,
-		roles
+		refreshToken
     }:{
-        email?: string;
+        userId?: number;
+		email?: string;
 		accessToken?: string;
-		refreshToken?: string;
-		roles?: Role[];     
+		refreshToken?: string;     
     } = {}
     ) {
         super('LoginResult'); 
 
-        this.email = email;
+        this.userId = userId;
+		this.email = email;
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
-		this.roles = roles;
     }
 
 }
