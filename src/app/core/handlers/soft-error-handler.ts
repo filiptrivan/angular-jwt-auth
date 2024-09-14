@@ -13,8 +13,8 @@ export class SoftErrorHandler implements ErrorHandler {
 
     if(error instanceof HttpErrorResponse == false){
       this.messageService.errorMessage(
+        $localize`:@@UnexpectedErrorDetails:Our team has been notified, and we're working to fix the issue. Please try again later.`,
         $localize`:@@UnexpectedErrorTitle:Something went wrong.`,
-        $localize`:@@UnexpectedErrorDetails:Our team has been notified, and we're working to fix the issue. Please try again later.`
       );
     }
 

@@ -11,10 +11,14 @@ export const environment = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     },
     httpTableOptions: {
-      headers: new HttpHeaders({ 'Content-Typeeee': 'applicadfation/jsoean' }),
+      headers: new HttpHeaders({ 'Content-Typeeee': 'applicadfation/json' }),
       params: new HttpParams().set('X-Skip-Spinner', 'true')
     },
     httpDropdownOptions: {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      params: new HttpParams().set('X-Skip-Spinner', 'true')
+    },
+    httpSkipSpinnerOptions: {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       params: new HttpParams().set('X-Skip-Spinner', 'true')
     },

@@ -1,26 +1,53 @@
-<auth>
-    <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-        <div class="col-12" style="padding: 0;">
-            <soft-textbox [control]="control('email')"></soft-textbox>
-        </div>
-        <div class="col-12" style="padding-left: 0; padding-right: 0;">
-            <soft-password [control]="control('password')"></soft-password>
-        </div>
-        <div class="col-12" style="padding-left: 0; padding-right: 0; padding-top: 0;">
-            <soft-password [control]="control('passwordConfirmation', true)"></soft-password>
-        </div>
-
-        <div class="mb-4 gap-5">
-            <div class="text-center" style="font-size: smaller;">
-                By clicking Agree & join or Continue, you agree to the {{companyName}} 
-                <b class="primary-color cursor-pointer">User Agreement</b>, <b class="primary-color cursor-pointer">Privacy Policy</b>, and <b class="primary-color cursor-pointer">Cookie Policy</b>.
+@if (showEmailSentDialog == false) {
+    <auth>
+        <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
+            <div class="col-12" style="padding: 0;">
+                <soft-textbox [control]="control('email')"></soft-textbox>
             </div>
-        </div>
+            <div class="col-12" style="padding-left: 0; padding-right: 0;">
+                <soft-password [control]="control('password')"></soft-password>
+            </div>
+    
+            <div class="mb-4 gap-5">
+                <div class="text-center" style="font-size: smaller;">
+                    By clicking Agree & join or Continue, you agree to the {{companyName}} 
+                    <b class="primary-color cursor-pointer">User Agreement</b>, <b class="primary-color cursor-pointer">Privacy Policy</b>, and <b class="primary-color cursor-pointer">Cookie Policy</b>.
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <p-button label="Agree & join" (onClick)="register()" [outlined]="true" [style]="{width: '100%'}"></p-button>
+                <p-button label="Already on {{companyName}}? Log in" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
+            </div>
+        </form>
+    </auth>
+}
+@else if (showEmailSentDialog == true && model.email != null) {
+    <div class="min-h-screen" style="display: flex; justify-content: center; align-items: center;">
+        <div class="dialog" style="padding: 0px;">
+            <soft-panel>
+                <panel-header title="Account verification" [bigTitle]="true" icon="pi pi-envelope"></panel-header>
+
+                <panel-body>
+                    <form class="grid">
+                        <div class="col-12">
+                            <div class="header">Verify your email address</div>
+                        </div>
+                        <div class="col-12">
+                            We’ve sent a verification email to {{model.email}}. Please check your email inbox or spam folder and click the “Verify email address” button to complete the process. Thank you!
+                        </div>
+                    </form>
+                </panel-body>
         
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-            <p-button label="Agree & join" (onClick)="register()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-            <p-button label="Already on {{companyName}}? Log in" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
+                <panel-footer>
+                    <a pButton class="p-button-link" label="Go to Gmail" icon="pi pi-external-link" href="https://mail.google.com/mail/u/" target="_blank" rel="noopener noreferrer"></a>
+                    <a pButton class="p-button-link" label="Go to Yahoo" icon="pi pi-external-link" href="https://mail.yahoo.com/d/folders/1/" target="_blank" rel="noopener noreferrer"></a>
+                </panel-footer>
+                <panel-footer>
+                    <div>If you don’t see it, you can <a class="link" (click)="resendVerificationToken()">resend the verification email.</a></div>
+                </panel-footer>
+            </soft-panel>
         </div>
-    </form>
-</auth>
+    </div>
+}
 

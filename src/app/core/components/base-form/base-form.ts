@@ -128,8 +128,8 @@ export class BaseForm<T extends BaseEntity> {
         this.formGroup.controls[key].markAsDirty(); // this.formGroup.markAsDirty(); // FT: For some reason this doesnt work
       });
       this.messageService.warningMessage(
+      $localize`:@@YouHaveSomeInvalidFieldsDescription:Some of the fields on the form are not valid, please check which ones and try again.`,
       $localize`:@@YouHaveSomeInvalidFieldsTitle:You have some invalid fields`, 
-      $localize`:@@YouHaveSomeInvalidFieldsDescription:Some of the fields on the form are not valid, please check which ones and try again.`
       );
 
       return false;

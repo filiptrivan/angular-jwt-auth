@@ -5,8 +5,9 @@ export class User extends BaseEntity
 {
     email?: string;
 	password?: string;
-	isDisabled?: boolean;
 	hasLoggedInWithExternalProvider?: boolean;
+	numberOfFailedAttemptsInARow?: number;
+	isVerified?: boolean;
 	version?: number;
 	id?: number;
 	createdAt?: Date;
@@ -18,8 +19,9 @@ export class User extends BaseEntity
     {
         email,
 		password,
-		isDisabled,
 		hasLoggedInWithExternalProvider,
+		numberOfFailedAttemptsInARow,
+		isVerified,
 		version,
 		id,
 		createdAt,
@@ -29,8 +31,9 @@ export class User extends BaseEntity
     }:{
         email?: string;
 		password?: string;
-		isDisabled?: boolean;
 		hasLoggedInWithExternalProvider?: boolean;
+		numberOfFailedAttemptsInARow?: number;
+		isVerified?: boolean;
 		version?: number;
 		id?: number;
 		createdAt?: Date;
@@ -43,8 +46,9 @@ export class User extends BaseEntity
 
         this.email = email;
 		this.password = password;
-		this.isDisabled = isDisabled;
 		this.hasLoggedInWithExternalProvider = hasLoggedInWithExternalProvider;
+		this.numberOfFailedAttemptsInARow = numberOfFailedAttemptsInARow;
+		this.isVerified = isVerified;
 		this.version = version;
 		this.id = id;
 		this.createdAt = createdAt;

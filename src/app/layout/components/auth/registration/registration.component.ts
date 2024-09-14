@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { SoftMessageService } from '../../../../core/services/soft-message.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -6,11 +7,10 @@ import { LayoutService } from '../../../service/app.layout.service';
 import { BaseForm } from '../../../../core/components/base-form/base-form';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Login } from 'src/app/business/entities/generated/login.generated';
 import { environment } from 'src/environments/environment';
 import { Registration } from 'src/app/business/entities/generated/registration.generated';
-import { confirmationPassword } from 'src/app/business/services/validation/validation-rules';
-import { SoftFormControl } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { RegistrationResultStatusCodes } from 'src/app/business/enums/generated/registration-result-status-codes.generated';
+import { RegistrationResult } from 'src/app/business/entities/generated/registration-result.generated';
 
 @Component({
     selector: 'app-registration',
@@ -19,6 +19,7 @@ import { SoftFormControl } from 'src/app/core/components/soft-form-control/soft-
 export class RegistrationComponent extends BaseForm<Registration> implements OnInit {
     companyName: string = environment.companyName;
     private subscription: Subscription | null = null;
+    showEmailSentDialog: boolean = false;
 
     constructor(
       protected override differs: KeyValueDiffers,
@@ -27,7 +28,8 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
       protected override changeDetectorRef: ChangeDetectorRef,
       public layoutService: LayoutService, 
       private authService: AuthService, 
-      private router: Router) { 
+      private router: Router,
+    ) { 
       super(differs, http, messageService, changeDetectorRef);
     }
 
@@ -38,18 +40,24 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
     
     init(model: Registration){
         this.initFormGroup(model);
-        let confirmationPasswordFormControl = this.formGroup.controls['passwordConfirmation'] as SoftFormControl;
-        let passwordFormControl = this.formGroup.controls['password'] as SoftFormControl;
-        confirmationPasswordFormControl.validator = confirmationPassword(confirmationPasswordFormControl, passwordFormControl);
     }
 
     register() {
         let isFormGroupValid: boolean = this.checkFormGroupValidity();
         if (isFormGroupValid == false) return;
         // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        // this.authService.login(this.model.password, this.model.email).subscribe(()=>{
-        //       this.router.navigate(['/']);
-        //   });
+        this.authService.register(this.model).subscribe((res)=>{
+            if (res.status == RegistrationResultStatusCodes.UserDoesNotExistAndDoesNotHaveValidToken) {
+                this.handleUserDoesNotExistAndDoesNotHaveValidToken();
+            }
+            else {
+                this.messageService.warningMessage(res.message);
+            }
+        });
+    }
+
+    handleUserDoesNotExistAndDoesNotHaveValidToken() {
+        this.showEmailSentDialog = true;
     }
 
     onGoogleSignIn(){
@@ -58,6 +66,10 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
 
     goToRegistrationPage(){
         
+    }
+
+    resendVerificationToken(){
+
     }
 
     ngOnDestroy(): void {

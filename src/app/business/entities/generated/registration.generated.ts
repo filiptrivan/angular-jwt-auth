@@ -5,24 +5,20 @@ export class Registration extends BaseEntity
 {
     email?: string;
 	password?: string;
-	passwordConfirmation?: string;
 
     constructor(
     {
         email,
-		password,
-		passwordConfirmation
+		password
     }:{
         email?: string;
-		password?: string;
-		passwordConfirmation?: string;     
+		password?: string;     
     } = {}
     ) {
         super('Registration'); 
 
         this.email = email;
 		this.password = password;
-		this.passwordConfirmation = passwordConfirmation;
     }
 
 }

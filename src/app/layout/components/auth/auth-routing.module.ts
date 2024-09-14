@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
         { path: 'access', loadChildren: () => import('./access/access.module').then(m => m.AccessModule) },
         { path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule) },
         { path: 'registration', loadChildren: () => import('./registration/registration.module').then(m => m.RegistrationModule) },
+        { path: 'verification', loadChildren: () => import('./verification/verification.module').then(m => m.VerificationModule) },
         { path: '**', redirectTo: '/not-found' }
     ])],
     exports: [RouterModule]

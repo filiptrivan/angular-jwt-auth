@@ -1,14 +1,13 @@
 import { BaseEntity } from "../../../core/entities/base-entity";
 
 
-export class RefreshToken extends BaseEntity
+export class BaseToken extends BaseEntity
 {
     email?: string;
 	ipAddress?: string;
 	browserId?: string;
 	tokenString?: string;
 	expireAt?: Date;
-	password?: string;
 
     constructor(
     {
@@ -16,25 +15,22 @@ export class RefreshToken extends BaseEntity
 		ipAddress,
 		browserId,
 		tokenString,
-		expireAt,
-		password
+		expireAt
     }:{
         email?: string;
 		ipAddress?: string;
 		browserId?: string;
 		tokenString?: string;
-		expireAt?: Date;
-		password?: string;     
+		expireAt?: Date;     
     } = {}
     ) {
-        super('RefreshToken'); 
+        super('BaseToken'); 
 
         this.email = email;
 		this.ipAddress = ipAddress;
 		this.browserId = browserId;
 		this.tokenString = tokenString;
 		this.expireAt = expireAt;
-		this.password = password;
     }
 
 }

@@ -172,3 +172,26 @@
 .hover-card:hover {
 	background-color: $disabled;
 }
+
+.dialog{
+	width: 600px;
+}
+
+@media (max-width: 600px) {
+	.dialog{
+		width: 100%;
+	}
+}
+
+.header{
+	font-size: 17.5px;
+}
+
+.link{
+	color: $primaryColor;
+	cursor: pointer;
+}
+
+.link:hover {
+	text-decoration: underline; 
+}

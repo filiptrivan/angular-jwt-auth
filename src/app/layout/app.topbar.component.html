@@ -19,11 +19,11 @@
         #topbarprofiledropdownmenubutton
         (click)="layoutService.showProfileDropdownSidebar()"
       >
-          <p-avatar 
-            [label]="avatarLabel"
-            size="large"
-            [style]="{ 'background-color': 'var(--primary-light-color)', 'color': 'var(--primary-dark-color)', 'cursor': 'pointer' }"
-            />
+        <p-avatar 
+          [label]="avatarLabel"
+          size="large"
+          [style]="{ 'background-color': 'var(--primary-color)', 'color': '#fff', 'cursor': 'pointer', 'width': '38px', 'height': '38px' }"
+          />
       </div>
       <div
         #topbarprofiledropdownmenu
@@ -34,7 +34,7 @@
           <p-avatar 
             [label]="avatarLabel"
             size="xlarge"
-            [style]="{ 'background-color': 'var(--primary-light-color)', 'color': 'var(--primary-dark-color)', 'cursor': 'pointer' }"
+            [style]="{ 'background-color': 'var(--primary-color)', 'color': '#fff', 'cursor': 'pointer' }"
             />
           <div>{{currentUser?.email}}</div>
         </div>

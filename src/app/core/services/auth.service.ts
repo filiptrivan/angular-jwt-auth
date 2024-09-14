@@ -7,10 +7,14 @@ import { environment } from '../../../environments/environment';
 import { LoginResult } from 'src/app/business/entities/generated/login-result.generated';
 import { User } from 'src/app/business/entities/generated/user.generated';
 import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
-import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
 import { ExternalProvider } from 'src/app/business/entities/generated/external-provider.generated';
 import { Login } from 'src/app/business/entities/generated/login.generated';
 import { RefreshTokenRequest } from 'src/app/business/entities/generated/refresh-token-request.generated';
+import { Registration } from 'src/app/business/entities/generated/registration.generated';
+import { RegistrationResult } from 'src/app/business/entities/generated/registration-result.generated';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { VerificationTokenRequest } from 'src/app/business/entities/generated/verification-token-request.generated';
+import { SoftMessageService } from './soft-message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,14 +35,16 @@ export class AuthService implements OnDestroy {
     private router: Router,
     private http: HttpClient,
     private route: ActivatedRoute,
-    private externalAuthService: SocialAuthService
+    private externalAuthService: SocialAuthService,
+    private apiService: ApiService,
+    private messageService: SoftMessageService, 
   ) {
     window.addEventListener('storage', this.storageEventListener.bind(this));
 
     // Google auth
     this.externalAuthService.authState.subscribe((user) => {
       const externalAuth: ExternalProvider = {
-        provider: user.provider,
+        // provider: user.provider,
         idToken: user.idToken
       }
       this.loginExternal(externalAuth).subscribe(()=>{
@@ -58,9 +64,9 @@ export class AuthService implements OnDestroy {
         this.stopTokenTimer();
         this.http
           .get<User>(`${this.apiUrl}/Auth/GetCurrentUser`)
-          .subscribe((user: User) => { // TODO FT: send everything that user has with token
+          .subscribe((user: User) => {
             this._user.next({
-              roles: user.roles,
+              id: user.id,
               email: user.email
             });
           });
@@ -82,6 +88,17 @@ export class AuthService implements OnDestroy {
     return this.handleLoginResult(loginResultObservable);
   }
 
+  register(body: Registration): Observable<RegistrationResult> {
+    return this.apiService.register(body);
+  }
+  
+  registrationVerification(body: VerificationTokenRequest): Observable<LoginResult> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    const loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/RegistrationVerification`, body);
+    return this.handleLoginResult(loginResultObservable);
+  }
+
   handleLoginResult(loginResultObservable: Observable<LoginResult>){
     return loginResultObservable.pipe(
         map((loginResult: LoginResult) => {
@@ -97,6 +114,7 @@ export class AuthService implements OnDestroy {
   }
 
   logout() {
+    console.log("object")
     this.http
       .post(`${this.apiUrl}/Auth/Logout`, {})
       .pipe(
@@ -122,7 +140,7 @@ export class AuthService implements OnDestroy {
     body.browserId = browserId;
     body.refreshToken = refreshToken;
     return this.http
-      .post<LoginResult>(`${this.apiUrl}/Auth/RefreshToken`, body)
+      .post<LoginResult>(`${this.apiUrl}/Auth/RefreshToken`, body, environment.httpSkipSpinnerOptions)
       .pipe(
         map((loginResult) => {
           this._user.next({
@@ -157,11 +175,12 @@ export class AuthService implements OnDestroy {
     return browserId;
   }
 
-  isUserAuthenticated(){
-    
+  isAccessTokenExpired(): Observable<boolean> {
+    const expired = this.getTokenRemainingTime() < 5000;
+    return of(expired);
   }
 
-  private getTokenRemainingTime() {
+  getTokenRemainingTime() {
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken) {
       return 0;

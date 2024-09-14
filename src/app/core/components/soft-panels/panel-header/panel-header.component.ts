@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PanelHeaderComponent implements OnInit {
   @Input() icon: string = 'pi pi-file-edit';
   @Input() title: string;
+  @Input() bigTitle: boolean;
 
   constructor() { }
 

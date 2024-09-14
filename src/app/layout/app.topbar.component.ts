@@ -53,9 +53,9 @@ export class AppTopBarComponent {
     constructor(public layoutService: LayoutService, private authService: AuthService, protected router: Router) { }
 
   ngOnInit(){
-    this.authService.user$.subscribe(res => {
-      this.currentUser = res;
-      this.avatarLabel = res.email.charAt(0).toLocaleUpperCase();
+      this.authService.user$.subscribe(res => {
+          this.currentUser = res;
+          this.avatarLabel = res?.email.charAt(0).toLocaleUpperCase();
     });
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))

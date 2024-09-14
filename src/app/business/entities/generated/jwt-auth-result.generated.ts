@@ -3,30 +3,30 @@ import { RefreshToken } from "./refresh-token.generated";
 
 export class JwtAuthResult extends BaseEntity
 {
-    accessToken?: string;
-	userId?: number;
+    userId?: number;
 	userEmail?: string;
-	refreshToken?: RefreshToken;
+	accessToken?: string;
+	token?: RefreshToken;
 
     constructor(
     {
-        accessToken,
-		userId,
+        userId,
 		userEmail,
-		refreshToken
+		accessToken,
+		token
     }:{
-        accessToken?: string;
-		userId?: number;
+        userId?: number;
 		userEmail?: string;
-		refreshToken?: RefreshToken;     
+		accessToken?: string;
+		token?: RefreshToken;     
     } = {}
     ) {
         super('JwtAuthResult'); 
 
-        this.accessToken = accessToken;
-		this.userId = userId;
+        this.userId = userId;
 		this.userEmail = userEmail;
-		this.refreshToken = refreshToken;
+		this.accessToken = accessToken;
+		this.token = token;
     }
 
 }

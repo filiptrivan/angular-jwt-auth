@@ -5,6 +5,9 @@ import { environment } from 'src/environments/environment';
 import { Login } from "./../../entities/generated/login.generated";
 import { LoginResult } from "./../../entities/generated/login-result.generated";
 import { ExternalProvider } from "./../../entities/generated/external-provider.generated";
+import { Registration } from "./../../entities/generated/registration.generated";
+import { RegistrationResult } from "./../../entities/generated/registration-result.generated";
+import { VerificationTokenRequest } from "./../../entities/generated/verification-token-request.generated";
 import { RefreshTokenRequest } from "./../../entities/generated/refresh-token-request.generated";
 import { User } from "./../../entities/generated/user.generated";
 import { TableFilter } from "./../../entities/generated/table-filter.generated";
@@ -25,15 +28,20 @@ export class ApiGeneratedService {
         return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/LoginExternal`, externalProviderDTO, environment.httpOptions);
     }
 
+    register(registrationDTO: Registration): Observable<RegistrationResult> { 
+        return this.http.post<RegistrationResult>(`${environment.apiUrl}/Auth/Register`, registrationDTO, environment.httpOptions);
+    }
 
-
+    registrationVerification(request: VerificationTokenRequest): Observable<LoginResult> { 
+        return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/RegistrationVerification`, request, environment.httpOptions);
+    }
 
     logout(): Observable<any> { 
         return this.http.post<any>(`${environment.apiUrl}/Auth/Logout`, environment.httpOptions);
     }
 
-    refreshToken(request: RefreshTokenRequest): Observable<any> { 
-        return this.http.post<any>(`${environment.apiUrl}/Auth/RefreshToken`, request, environment.httpOptions);
+    refreshToken(request: RefreshTokenRequest): Observable<LoginResult> { 
+        return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/RefreshToken`, request, environment.httpOptions);
     }
 
     getCurrentUser(): Observable<User> {

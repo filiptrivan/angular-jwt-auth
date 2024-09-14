@@ -6,7 +6,6 @@ import { environment } from "src/environments/environment";
 import { LayoutService } from "src/app/layout/service/app.layout.service";
 import { AuthService } from "src/app/core/services/auth.service";
 import { GoogleSigninButtonModule } from "@abacritt/angularx-social-login";
-import { ExternalProvider } from "src/app/business/entities/generated/external-provider.generated";
 
 @Component({
   selector: 'auth',

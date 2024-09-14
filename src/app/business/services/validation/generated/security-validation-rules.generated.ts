@@ -5,21 +5,12 @@ import { validatePrecisionScale } from '../../../../core/services/helper-functio
 export function getValidatorSecurity(formControl: SoftFormControl, className: string): SoftValidatorFn {
     switch(formControl.label + className){
 
+
+
         case 'namePermission':
             return namePermissionValidator(formControl);
         case 'descriptionPermission':
             return descriptionPermissionValidator(formControl);
-
-        case 'passwordLogin':
-            return passwordLoginValidator(formControl);
-        case 'emailLogin':
-            return emailLoginValidator(formControl);
-        case 'ipAddressLogin':
-            return ipAddressLoginValidator(formControl);
-        case 'isSuccessfulLogin':
-            return isSuccessfulLoginValidator(formControl);
-        case 'isExternalLogin':
-            return isExternalLoginValidator(formControl);
 
         case 'nameRole':
             return nameRoleValidator(formControl);
@@ -30,20 +21,24 @@ export function getValidatorSecurity(formControl: SoftFormControl, className: st
             return passwordUserValidator(formControl);
         case 'emailUser':
             return emailUserValidator(formControl);
-        case 'isDisabledUser':
-            return isDisabledUserValidator(formControl);
         case 'hasLoggedInWithExternalProviderUser':
             return hasLoggedInWithExternalProviderUserValidator(formControl);
+        case 'numberOfFailedAttemptsInARowUser':
+            return numberOfFailedAttemptsInARowUserValidator(formControl);
+        case 'isVerifiedUser':
+            return isVerifiedUserValidator(formControl);
 
+
+        case 'emailLogin':
+            return emailLoginValidator(formControl);
+        case 'passwordLogin':
+            return passwordLoginValidator(formControl);
 
 
         case 'emailRegistration':
             return emailRegistrationValidator(formControl);
         case 'passwordRegistration':
             return passwordRegistrationValidator(formControl);
-        case 'passwordConfirmationRegistration':
-            return passwordConfirmationRegistrationValidator(formControl);
-
 
 
 
@@ -51,6 +46,8 @@ export function getValidatorSecurity(formControl: SoftFormControl, className: st
             return null;
     }
 }
+
+
 
 
 export function namePermissionValidator(control: SoftFormControl): SoftValidatorFn {
@@ -83,80 +80,6 @@ export function descriptionPermissionValidator(control: SoftFormControl): SoftVa
         return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
     };
     
-    return validator;
-}
-
-
-export function passwordLoginValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-
-        const passwordValid = notEmptyRule;
-
-        return passwordValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function emailLoginValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-
-        const emailValid = notEmptyRule;
-
-        return emailValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function ipAddressLoginValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const min = 0;
-        const max = 45;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const ipAddressValid = notEmptyRule && stringLengthRule;
-
-        return ipAddressValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function isSuccessfulLoginValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-
-        const isSuccessfulValid = notEmptyRule;
-
-        return isSuccessfulValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function isExternalLoginValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-
-        const isExternalValid = notEmptyRule;
-
-        return isExternalValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-    validator.hasNotEmptyRule = true;
     return validator;
 }
 
@@ -230,20 +153,6 @@ export function emailUserValidator(control: SoftFormControl): SoftValidatorFn {
     return validator;
 }
 
-export function isDisabledUserValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-
-        const isDisabledValid = notEmptyRule;
-
-        return isDisabledValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
 export function hasLoggedInWithExternalProviderUserValidator(control: SoftFormControl): SoftValidatorFn {
     const validator: SoftValidatorFn = (): ValidationErrors | null => {
         const value = control.value;
@@ -258,6 +167,69 @@ export function hasLoggedInWithExternalProviderUserValidator(control: SoftFormCo
     return validator;
 }
 
+export function numberOfFailedAttemptsInARowUserValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+
+        const numberOfFailedAttemptsInARowValid = notEmptyRule;
+
+        return numberOfFailedAttemptsInARowValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
+    };
+    validator.hasNotEmptyRule = true;
+    return validator;
+}
+
+export function isVerifiedUserValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+
+        const isVerifiedValid = notEmptyRule;
+
+        return isVerifiedValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
+    };
+    validator.hasNotEmptyRule = true;
+    return validator;
+}
+
+
+
+export function emailLoginValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+        const min = 5;
+        const max = 100;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const emailValid = notEmptyRule && stringLengthRule;
+
+        return emailValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+    validator.hasNotEmptyRule = true;
+    return validator;
+}
+
+export function passwordLoginValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+        const min = 6;
+        const max = 20;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const passwordValid = notEmptyRule && stringLengthRule;
+
+        return passwordValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+    validator.hasNotEmptyRule = true;
+    return validator;
+}
 
 
 
@@ -267,7 +239,7 @@ export function emailRegistrationValidator(control: SoftFormControl): SoftValida
 
         const notEmptyRule = typeof value !== 'undefined' && value !== '';
         const min = 5;
-        const max = 75;
+        const max = 100;
         const stringLengthRule = value?.length >= min && value?.length <= max;
         const emailAddressRule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
@@ -295,21 +267,6 @@ export function passwordRegistrationValidator(control: SoftFormControl): SoftVal
     validator.hasNotEmptyRule = true;
     return validator;
 }
-
-export function passwordConfirmationRegistrationValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-
-        const passwordConfirmationValid = notEmptyRule;
-
-        return passwordConfirmationValid ? null : { _ : $localize`:@@NotEmpty:The field is mandatory.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
 
 
 

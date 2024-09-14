@@ -23,6 +23,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     private messageService: SoftMessageService,
   ) {}
 
+  // TODO FT: Handle all on the server
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     if (!environment.production) {
       console.error(err);
@@ -44,45 +45,52 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     if (err.status == 404) {
       // TODO: vidi kako da resis ovo jer 404 moze da bude i kad ide na pogresnu stranicu i kad ne pronadje korisnika
       this.messageService.warningMessage(
+        $localize`:@@NotFoundDetails:The requested resource was not found please try again.`,
         $localize`:@@NotFoundTitle:Not found.`,
-        $localize`:@@NotFoundDetails:The requested resource was not found please try again.`
       );
       return of(err.message);
     } else if (err.status == 403) {
       this.messageService.warningMessage(
+        $localize`:@@PermissionErrorDetails:You don't have permission for this operation.`,
         $localize`:@@PermissionErrorTitle:Permission error.`,
-        $localize`:@@PermissionErrorDetails:You don't have permission for this operation.`
       );
       return of(err.message);
     } else if (err.status == 401) {
       this.messageService.warningMessage(
+        $localize`:@@SessionExpiredDetails:Your session has expired because of inactivity. To continue, please log in again.`,
         $localize`:@@SessionExpiredTitle:Session expired. Log in to continue.`,
-        $localize`:@@SessionExpiredDetails:Your session has expired because of inactivity. To continue, please log in again.`
       );
       this.logout(err);
+    } else if (err.status == 419) {
+      this.messageService.warningMessage(
+        err.error.message,
+        $localize`:@@VerificationLinkExpiredTitle:The verification link expired.`,
+      );
+      this.router.navigate(['auth/registration']);
+      return of(err.message);
     } else if (err.status == 400) {
       this.messageService.warningMessage(
+        $localize`:@@BadRequestDetails:Sorry, we couldn't fulfill your request. Please ensure all fields are correctly filled and try again.`,
         $localize`:@@BadRequestTitle:Bad request.`,
-        $localize`:@@BadRequestDetails:Sorry, we couldn't fulfill your request. Please ensure all fields are correctly filled and try again.`
       );
       return of(err.message);
     } else if (err.status == 0) {
       this.messageService.warningMessage(
+        $localize`:@@ServerLostConnectionDetails:Connection lost. Please check your internet connection. If the issue persists, contact our support team.`,
         $localize`:@@ServerLostConnectionTitle:Connection lost.`,
-        $localize`:@@ServerLostConnectionDetails:Connection lost. Please check your internet connection. If the issue persists, contact our support team.`
       );
       this.logout(err);
     } else if (err.error?.exception?.startsWith("Soft.Generator.Shared.SoftExceptions.BusinessException:")){
       this.messageService.warningMessage(
+        err.error.message,
         $localize`:@@Warning:Warning.`,
-        err.error.message
       );
       return of(err.message);
     }
     else {
       this.messageService.errorMessage(
+        $localize`:@@UnexpectedErrorDetails:Our team has been notified, and we're working to fix the issue. Please try again later.`,
         $localize`:@@UnexpectedErrorTitle:Something went wrong.`,
-        $localize`:@@UnexpectedErrorDetails:Our team has been notified, and we're working to fix the issue. Please try again later.`
       );
       return of(err.message);
     }
