@@ -7,6 +7,7 @@ import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
 import { GoogleButtonComponent } from "../partials/google-button.component";
 import { AuthComponent } from "../partials/auth.compoment";
 import { PrimengModule } from 'src/app/layout/modules/primeng.module';
+import { LoginVerificationComponent } from '../partials/verification/login-verification.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { PrimengModule } from 'src/app/layout/modules/primeng.module';
     FormsModule,
     ReactiveFormsModule,
     SoftControlsModule,
+    LoginVerificationComponent,
     GoogleButtonComponent,
     AuthComponent
 ],

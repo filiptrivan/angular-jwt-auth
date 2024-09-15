@@ -11,9 +11,9 @@ import { ExternalProvider } from 'src/app/business/entities/generated/external-p
 import { Login } from 'src/app/business/entities/generated/login.generated';
 import { RefreshTokenRequest } from 'src/app/business/entities/generated/refresh-token-request.generated';
 import { Registration } from 'src/app/business/entities/generated/registration.generated';
-import { RegistrationResult } from 'src/app/business/entities/generated/registration-result.generated';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { SoftMessageService } from './soft-message.service';
+import { RegistrationVerificationResult } from 'src/app/business/entities/generated/registration-verification-result.generated';
 import { VerificationTokenRequest } from 'src/app/business/entities/generated/verification-token-request.generated';
 
 @Injectable({
@@ -75,7 +75,13 @@ export class AuthService implements OnDestroy {
     }
   }
 
-  login(body: Login): Observable<LoginResult> {
+  sendLoginVerificationEmail(body: Login): Observable<any> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    return this.apiService.sendLoginVerificationEmail(body);
+  }
+
+  login(body: VerificationTokenRequest): Observable<LoginResult> {
     const browserId = this.getBrowserId();
     body.browserId = browserId;
     const loginResultObservable = this.apiService.login(body);
@@ -89,7 +95,9 @@ export class AuthService implements OnDestroy {
     return this.handleLoginResult(loginResultObservable);
   }
 
-  sendRegistrationVerificationEmail(body: Registration): Observable<RegistrationResult> {
+  sendRegistrationVerificationEmail(body: Registration): Observable<RegistrationVerificationResult> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
     return this.apiService.sendRegistrationVerificationEmail(body);
   }
   

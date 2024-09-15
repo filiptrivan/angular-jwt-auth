@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Login } from 'src/app/business/entities/generated/login.generated';
 import { environment } from 'src/environments/environment';
+import { VerificationTypeCodes } from 'src/app/business/enums/verification-type-codes';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +18,8 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
     companyName: string = environment.companyName;
     usersCanRegister: boolean = environment.usersCanRegister;
     private subscription: Subscription | null = null;
+    showEmailSentDialog: boolean = false;
+    verificationType: VerificationTypeCodes = VerificationTypeCodes.Login;
 
     constructor(
       protected override differs: KeyValueDiffers,
@@ -40,12 +43,12 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
         this.initFormGroup(model);
     }
 
-    login() {
+    sendLoginVerificationEmail() {
         let isFormGroupValid: boolean = this.checkFormGroupValidity();
         if (isFormGroupValid == false) return;
         // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService.login(this.model).subscribe(()=>{
-            this.router.navigate(['/']);
+        this.authService.sendLoginVerificationEmail(this.model).subscribe(()=>{
+            this.showEmailSentDialog = true;
         });
     }
 

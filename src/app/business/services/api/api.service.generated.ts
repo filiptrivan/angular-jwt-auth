@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Login } from "./../../entities/generated/login.generated";
+import { VerificationTokenRequest } from "./../../entities/generated/verification-token-request.generated";
 import { LoginResult } from "./../../entities/generated/login-result.generated";
 import { ExternalProvider } from "./../../entities/generated/external-provider.generated";
 import { Registration } from "./../../entities/generated/registration.generated";
 import { RegistrationVerificationResult } from "./../../entities/generated/registration-verification-result.generated";
-import { VerificationTokenRequest } from "./../../entities/generated/verification-token-request.generated";
 import { RefreshTokenRequest } from "./../../entities/generated/refresh-token-request.generated";
 import { User } from "./../../entities/generated/user.generated";
 import { TableFilter } from "./../../entities/generated/table-filter.generated";
@@ -20,8 +20,12 @@ export class ApiGeneratedService {
     constructor(protected http: HttpClient) {}
 
     
-    login(loginDTO: Login): Observable<LoginResult> { 
-        return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/Login`, loginDTO, environment.httpOptions);
+    sendLoginVerificationEmail(loginDTO: Login): Observable<any> { 
+        return this.http.post<any>(`${environment.apiUrl}/Auth/SendLoginVerificationEmail`, loginDTO, environment.httpOptions);
+    }
+
+    login(request: VerificationTokenRequest): Observable<LoginResult> { 
+        return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/Login`, request, environment.httpOptions);
     }
 
     loginExternal(externalProviderDTO: ExternalProvider): Observable<LoginResult> { 

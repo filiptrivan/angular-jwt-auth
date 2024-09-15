@@ -8,8 +8,8 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Registration } from 'src/app/business/entities/generated/registration.generated';
-import { RegistrationResultStatusCodes } from 'src/app/business/enums/generated/registration-result-status-codes.generated';
-import { RegistrationResult } from 'src/app/business/entities/generated/registration-result.generated';
+import { RegistrationVerificationResultStatusCodes } from 'src/app/business/enums/generated/registration-verification-result-status-codes.generated';
+import { VerificationTypeCodes } from 'src/app/business/enums/verification-type-codes';
 
 @Component({
     selector: 'app-registration',
@@ -19,6 +19,7 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
     companyName: string = environment.companyName;
     private subscription: Subscription | null = null;
     showEmailSentDialog: boolean = false;
+    verificationType: VerificationTypeCodes = VerificationTypeCodes.Login;
 
     constructor(
       protected override differs: KeyValueDiffers,
@@ -46,7 +47,7 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
         if (isFormGroupValid == false) return;
         // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
         this.authService.sendRegistrationVerificationEmail(this.model).subscribe((res)=>{
-            if (res.status == RegistrationResultStatusCodes.UserDoesNotExistAndDoesNotHaveValidToken) {
+            if (res.status == RegistrationVerificationResultStatusCodes.UserDoesNotExistAndDoesNotHaveValidToken) {
                 this.handleUserDoesNotExistAndDoesNotHaveValidToken();
             }
             else {

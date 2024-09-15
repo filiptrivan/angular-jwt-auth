@@ -4,7 +4,6 @@ import { validatePrecisionScale } from '../../../../core/services/helper-functio
 
 export function getValidatorSecurity(formControl: SoftFormControl, className: string): SoftValidatorFn {
     switch(formControl.label + className){
-
         case 'passwordUser':
             return passwordUserValidator(formControl);
         case 'emailUser':
@@ -17,11 +16,25 @@ export function getValidatorSecurity(formControl: SoftFormControl, className: st
             return isVerifiedUserValidator(formControl);
 
 
+        case 'namePermission':
+            return namePermissionValidator(formControl);
+        case 'descriptionPermission':
+            return descriptionPermissionValidator(formControl);
+
+        case 'nameRole':
+            return nameRoleValidator(formControl);
+        case 'descriptionRole':
+            return descriptionRoleValidator(formControl);
+
 
         case 'emailLogin':
             return emailLoginValidator(formControl);
         case 'passwordLogin':
             return passwordLoginValidator(formControl);
+
+
+
+
 
 
         case 'emailRegistration':
@@ -30,35 +43,16 @@ export function getValidatorSecurity(formControl: SoftFormControl, className: st
             return passwordRegistrationValidator(formControl);
 
 
+
         case 'verificationCodeVerificationTokenRequest':
             return verificationCodeVerificationTokenRequestValidator(formControl);
         case 'emailVerificationTokenRequest':
             return emailVerificationTokenRequestValidator(formControl);
-        case 'verificationCodeVerificationTokenRequest':
-            return verificationCodeVerificationTokenRequestValidator(formControl);
-        case 'emailVerificationTokenRequest':
-            return emailVerificationTokenRequestValidator(formControl);
-
-
-
-
-
-
-        case 'nameRole':
-            return nameRoleValidator(formControl);
-        case 'descriptionRole':
-            return descriptionRoleValidator(formControl);
-
-        case 'namePermission':
-            return namePermissionValidator(formControl);
-        case 'descriptionPermission':
-            return descriptionPermissionValidator(formControl);
 
         default:
             return null;
     }
 }
-
 
 export function passwordUserValidator(control: SoftFormControl): SoftValidatorFn {
     const validator: SoftValidatorFn = (): ValidationErrors | null => {
@@ -139,6 +133,74 @@ export function isVerifiedUserValidator(control: SoftFormControl): SoftValidator
 
 
 
+export function namePermissionValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+        const min = 0;
+        const max = 255;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const nameValid = notEmptyRule && stringLengthRule;
+
+        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+    validator.hasNotEmptyRule = true;
+    return validator;
+}
+
+export function descriptionPermissionValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const min = 0;
+        const max = 1000;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const descriptionValid = stringLengthRule;
+
+        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+    
+    return validator;
+}
+
+
+export function nameRoleValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const notEmptyRule = typeof value !== 'undefined' && value !== '';
+        const min = 0;
+        const max = 255;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const nameValid = notEmptyRule && stringLengthRule;
+
+        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+    validator.hasNotEmptyRule = true;
+    return validator;
+}
+
+export function descriptionRoleValidator(control: SoftFormControl): SoftValidatorFn {
+    const validator: SoftValidatorFn = (): ValidationErrors | null => {
+        const value = control.value;
+
+        const min = 0;
+        const max = 1000;
+        const stringLengthRule = value?.length >= min && value?.length <= max;
+
+        const descriptionValid = stringLengthRule;
+
+        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
+    };
+    
+    return validator;
+}
+
+
 
 export function emailLoginValidator(control: SoftFormControl): SoftValidatorFn {
     const validator: SoftValidatorFn = (): ValidationErrors | null => {
@@ -173,6 +235,10 @@ export function passwordLoginValidator(control: SoftFormControl): SoftValidatorF
     validator.hasNotEmptyRule = true;
     return validator;
 }
+
+
+
+
 
 
 
@@ -213,39 +279,6 @@ export function passwordRegistrationValidator(control: SoftFormControl): SoftVal
 
 
 
-export function verificationCodeVerificationTokenRequestValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const length = 6;
-        const stringSingleLengthRule = value?.length == length;
-
-        const verificationCodeValid = notEmptyRule && stringSingleLengthRule;
-
-        return verificationCodeValid ? null : { _ : $localize`:@@NotEmptySingleLength:The field is mandatory and must be ${length} character long.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function emailVerificationTokenRequestValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const min = 5;
-        const max = 100;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-        const emailAddressRule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-        const emailValid = notEmptyRule && stringLengthRule && emailAddressRule;
-
-        return emailValid ? null : { _ : $localize`:@@NotEmptyLengthEmailAddress:The field is mandatory, must have a minimum of ${min} and a maximum of ${max} characters and must be a valid email address.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
 
 export function verificationCodeVerificationTokenRequestValidator(control: SoftFormControl): SoftValidatorFn {
     const validator: SoftValidatorFn = (): ValidationErrors | null => {
@@ -278,79 +311,6 @@ export function emailVerificationTokenRequestValidator(control: SoftFormControl)
         return emailValid ? null : { _ : $localize`:@@NotEmptyLengthEmailAddress:The field is mandatory, must have a minimum of ${min} and a maximum of ${max} characters and must be a valid email address.` };
     };
     validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-
-
-
-
-
-
-export function nameRoleValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const min = 0;
-        const max = 255;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const nameValid = notEmptyRule && stringLengthRule;
-
-        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function descriptionRoleValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const min = 0;
-        const max = 1000;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const descriptionValid = stringLengthRule;
-
-        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-    
-    return validator;
-}
-
-
-export function namePermissionValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const notEmptyRule = typeof value !== 'undefined' && value !== '';
-        const min = 0;
-        const max = 255;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const nameValid = notEmptyRule && stringLengthRule;
-
-        return nameValid ? null : { _ : $localize`:@@NotEmptyLength:The field is mandatory and must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-    validator.hasNotEmptyRule = true;
-    return validator;
-}
-
-export function descriptionPermissionValidator(control: SoftFormControl): SoftValidatorFn {
-    const validator: SoftValidatorFn = (): ValidationErrors | null => {
-        const value = control.value;
-
-        const min = 0;
-        const max = 1000;
-        const stringLengthRule = value?.length >= min && value?.length <= max;
-
-        const descriptionValid = stringLengthRule;
-
-        return descriptionValid ? null : { _ : $localize`:@@Length:The field must have a minimum of ${min} and a maximum of ${max} characters.` };
-    };
-    
     return validator;
 }
 

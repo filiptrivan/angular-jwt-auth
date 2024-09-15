@@ -9,13 +9,13 @@
                         <div class="header">Verify your email address</div>
                     </div>
                     <div class="col-12">
-                        We’ve sent a verification code to {{model.email}}. Please check your email inbox or spam folder and enter the code that we’ve sent to complete the process. Thank you!
+                        We’ve sent a verification code to {{email}}. Please check your email inbox or spam folder and enter the code that we’ve sent to complete the process. Thank you!
                     </div>
                     <div class="col-12">
                         <soft-textbox [control]="control('verificationCode')"></soft-textbox>
                     </div>
                     <div class="col-12">
-                        <p-button (onClick)="onCodeSubmit()" label="Submit" icon="pi pi-verified"></p-button>
+                        <p-button (onClick)="codeSubmit()" label="Submit" icon="pi pi-verified"></p-button>
                     </div>
                 </form>
             </panel-body>
