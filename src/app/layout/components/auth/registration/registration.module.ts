@@ -7,6 +7,7 @@ import { GoogleButtonComponent } from "../partials/google-button.component";
 import { AuthComponent } from "../partials/auth.compoment";
 import { PrimengModule } from 'src/app/layout/modules/primeng.module';
 import { RegistrationComponent } from './registration.component';
+import { VerificationComponent } from '../verification/verification.component';
 
 @NgModule({
     imports: [
@@ -16,8 +17,9 @@ import { RegistrationComponent } from './registration.component';
         FormsModule,
         ReactiveFormsModule,
         SoftControlsModule,
+        VerificationComponent,
         GoogleButtonComponent,
-        AuthComponent
+        AuthComponent,
     ],
     declarations: [RegistrationComponent]
 })

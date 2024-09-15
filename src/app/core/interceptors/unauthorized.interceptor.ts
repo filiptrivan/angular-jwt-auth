@@ -64,9 +64,8 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     } else if (err.status == 419) {
       this.messageService.warningMessage(
         err.error.message,
-        $localize`:@@VerificationLinkExpiredTitle:The verification link expired.`,
+        null
       );
-      this.router.navigate(['auth/registration']);
       return of(err.message);
     } else if (err.status == 400) {
       this.messageService.warningMessage(

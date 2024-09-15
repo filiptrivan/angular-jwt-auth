@@ -8,7 +8,6 @@ export class RefreshToken extends BaseEntity
 	browserId?: string;
 	tokenString?: string;
 	expireAt?: Date;
-	password?: string;
 
     constructor(
     {
@@ -16,15 +15,13 @@ export class RefreshToken extends BaseEntity
 		ipAddress,
 		browserId,
 		tokenString,
-		expireAt,
-		password
+		expireAt
     }:{
         email?: string;
 		ipAddress?: string;
 		browserId?: string;
 		tokenString?: string;
-		expireAt?: Date;
-		password?: string;     
+		expireAt?: Date;     
     } = {}
     ) {
         super('RefreshToken'); 
@@ -34,7 +31,6 @@ export class RefreshToken extends BaseEntity
 		this.browserId = browserId;
 		this.tokenString = tokenString;
 		this.expireAt = expireAt;
-		this.password = password;
     }
 
 }

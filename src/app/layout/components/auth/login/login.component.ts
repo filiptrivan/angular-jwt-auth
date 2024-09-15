@@ -49,14 +49,6 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
         });
     }
 
-    onGoogleSignIn(){
-        
-    }
-
-    goToRegistrationPage(){
-        
-    }
-
     ngOnDestroy(): void {
         this.subscription?.unsubscribe();
     }

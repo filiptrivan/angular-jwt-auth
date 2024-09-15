@@ -1,12 +1,9 @@
 import { BaseEntity } from "../../../core/entities/base-entity";
 
 
-export class VerificationTokenRequest extends BaseEntity
+export class LogiVerificationTokenRequest extends BaseEntity
 {
     verificationCode?: string;
-	browserId?: string;
-	email?: string;
-	verificationCode?: string;
 	browserId?: string;
 	email?: string;
 
@@ -14,25 +11,16 @@ export class VerificationTokenRequest extends BaseEntity
     {
         verificationCode,
 		browserId,
-		email,
-		verificationCode,
-		browserId,
 		email
     }:{
         verificationCode?: string;
 		browserId?: string;
-		email?: string;
-		verificationCode?: string;
-		browserId?: string;
 		email?: string;     
     } = {}
     ) {
-        super('VerificationTokenRequest'); 
+        super('LogiVerificationTokenRequest'); 
 
         this.verificationCode = verificationCode;
-		this.browserId = browserId;
-		this.email = email;
-		this.verificationCode = verificationCode;
 		this.browserId = browserId;
 		this.email = email;
     }

@@ -1,4 +1,3 @@
-import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { SoftMessageService } from '../../../../core/services/soft-message.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -42,11 +41,11 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
         this.initFormGroup(model);
     }
 
-    register() {
+    sendRegistrationVerificationEmail() {
         let isFormGroupValid: boolean = this.checkFormGroupValidity();
         if (isFormGroupValid == false) return;
         // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService.register(this.model).subscribe((res)=>{
+        this.authService.sendRegistrationVerificationEmail(this.model).subscribe((res)=>{
             if (res.status == RegistrationResultStatusCodes.UserDoesNotExistAndDoesNotHaveValidToken) {
                 this.handleUserDoesNotExistAndDoesNotHaveValidToken();
             }
@@ -58,18 +57,6 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
 
     handleUserDoesNotExistAndDoesNotHaveValidToken() {
         this.showEmailSentDialog = true;
-    }
-
-    onGoogleSignIn(){
-        
-    }
-
-    goToRegistrationPage(){
-        
-    }
-
-    resendVerificationToken(){
-
     }
 
     ngOnDestroy(): void {

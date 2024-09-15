@@ -13,8 +13,8 @@ import { RefreshTokenRequest } from 'src/app/business/entities/generated/refresh
 import { Registration } from 'src/app/business/entities/generated/registration.generated';
 import { RegistrationResult } from 'src/app/business/entities/generated/registration-result.generated';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { VerificationTokenRequest } from 'src/app/business/entities/generated/verification-token-request.generated';
 import { SoftMessageService } from './soft-message.service';
+import { VerificationTokenRequest } from 'src/app/business/entities/generated/verification-token-request.generated';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,7 @@ import { SoftMessageService } from './soft-message.service';
 export class AuthService implements OnDestroy {
   private readonly apiUrl = environment.apiUrl;
   private timer?: Subscription;
+
   private _user = new BehaviorSubject<User | null>(null);
   user$ = this._user.asObservable();
 
@@ -77,7 +78,7 @@ export class AuthService implements OnDestroy {
   login(body: Login): Observable<LoginResult> {
     const browserId = this.getBrowserId();
     body.browserId = browserId;
-    const loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/Login`, body)
+    const loginResultObservable = this.apiService.login(body);
     return this.handleLoginResult(loginResultObservable);
   }
 
@@ -88,14 +89,14 @@ export class AuthService implements OnDestroy {
     return this.handleLoginResult(loginResultObservable);
   }
 
-  register(body: Registration): Observable<RegistrationResult> {
-    return this.apiService.register(body);
+  sendRegistrationVerificationEmail(body: Registration): Observable<RegistrationResult> {
+    return this.apiService.sendRegistrationVerificationEmail(body);
   }
   
-  registrationVerification(body: VerificationTokenRequest): Observable<LoginResult> {
+  register(body: VerificationTokenRequest): Observable<LoginResult> {
     const browserId = this.getBrowserId();
     body.browserId = browserId;
-    const loginResultObservable = this.http.post<LoginResult>(`${this.apiUrl}/Auth/RegistrationVerification`, body);
+    const loginResultObservable = this.apiService.register(body);
     return this.handleLoginResult(loginResultObservable);
   }
 
@@ -114,7 +115,6 @@ export class AuthService implements OnDestroy {
   }
 
   logout() {
-    console.log("object")
     this.http
       .post(`${this.apiUrl}/Auth/Logout`, {})
       .pipe(

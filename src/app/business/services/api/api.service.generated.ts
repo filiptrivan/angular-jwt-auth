@@ -6,7 +6,7 @@ import { Login } from "./../../entities/generated/login.generated";
 import { LoginResult } from "./../../entities/generated/login-result.generated";
 import { ExternalProvider } from "./../../entities/generated/external-provider.generated";
 import { Registration } from "./../../entities/generated/registration.generated";
-import { RegistrationResult } from "./../../entities/generated/registration-result.generated";
+import { RegistrationVerificationResult } from "./../../entities/generated/registration-verification-result.generated";
 import { VerificationTokenRequest } from "./../../entities/generated/verification-token-request.generated";
 import { RefreshTokenRequest } from "./../../entities/generated/refresh-token-request.generated";
 import { User } from "./../../entities/generated/user.generated";
@@ -28,12 +28,12 @@ export class ApiGeneratedService {
         return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/LoginExternal`, externalProviderDTO, environment.httpOptions);
     }
 
-    register(registrationDTO: Registration): Observable<RegistrationResult> { 
-        return this.http.post<RegistrationResult>(`${environment.apiUrl}/Auth/Register`, registrationDTO, environment.httpOptions);
+    sendRegistrationVerificationEmail(registrationDTO: Registration): Observable<RegistrationVerificationResult> { 
+        return this.http.post<RegistrationVerificationResult>(`${environment.apiUrl}/Auth/SendRegistrationVerificationEmail`, registrationDTO, environment.httpOptions);
     }
 
-    registrationVerification(request: VerificationTokenRequest): Observable<LoginResult> { 
-        return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/RegistrationVerification`, request, environment.httpOptions);
+    register(request: VerificationTokenRequest): Observable<LoginResult> { 
+        return this.http.post<LoginResult>(`${environment.apiUrl}/Auth/Register`, request, environment.httpOptions);
     }
 
     logout(): Observable<any> { 

@@ -1,30 +1,26 @@
 import { BaseEntity } from "../../../core/entities/base-entity";
 
 
-export class VerificationToken extends BaseEntity
+export class RegistrationVerificationToken extends BaseEntity
 {
-    email?: string;
-	expireAt?: Date;
+    password?: string;
 	email?: string;
 	expireAt?: Date;
 
     constructor(
     {
-        email,
-		expireAt,
+        password,
 		email,
 		expireAt
     }:{
-        email?: string;
-		expireAt?: Date;
+        password?: string;
 		email?: string;
 		expireAt?: Date;     
     } = {}
     ) {
-        super('VerificationToken'); 
+        super('RegistrationVerificationToken'); 
 
-        this.email = email;
-		this.expireAt = expireAt;
+        this.password = password;
 		this.email = email;
 		this.expireAt = expireAt;
     }

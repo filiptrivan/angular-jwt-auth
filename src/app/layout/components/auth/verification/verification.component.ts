@@ -1,23 +1,36 @@
-import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SoftMessageService } from '../../../../core/services/soft-message.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, KeyValueDiffers, OnInit } from '@angular/core';
 import { LayoutService } from '../../../service/app.layout.service';
 import { BaseForm } from '../../../../core/components/base-form/base-form';
-import { catchError, Subscription, throwError, empty } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Registration } from 'src/app/business/entities/generated/registration.generated';
 import { VerificationTokenRequest } from 'src/app/business/entities/generated/verification-token-request.generated';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { RegistrationResultStatusCodes } from 'src/app/business/enums/generated/registration-result-status-codes.generated';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { PrimengModule } from 'src/app/layout/modules/primeng.module';
 
 @Component({
     selector: 'verification',
     templateUrl: './verification.component.html',
+    standalone: true,
+    imports: [
+        CommonModule,
+        PrimengModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SoftControlsModule,
+    ]
 })
 export class VerificationComponent extends BaseForm<VerificationTokenRequest> implements OnInit {
     private subscription: Subscription | null = null;
-    email: string;
+    @Input() email: string;
+    @Input() password: string;
 
     constructor(
       protected override differs: KeyValueDiffers,
@@ -28,59 +41,40 @@ export class VerificationComponent extends BaseForm<VerificationTokenRequest> im
       private authService: AuthService, 
       private router: Router,
       private route: ActivatedRoute,
+      private apiService: ApiService,
     ) { 
       super(differs, http, messageService, changeDetectorRef);
     }
 
     ngOnInit(){
         this.subscription = this.authService.navigateToDashboardIfLoggedIn(); // TODO FT: Make the guard for this
-        this.init(new VerificationTokenRequest());
-        this.route.queryParams.subscribe(params => {
-            this.model.accessToken = params['access_token'];
-            this.model.verificationToken =  params['verification_token'];
-            if (this.model.accessToken && this.model.verificationToken) {
-                this.parseToken(this.model.accessToken);
-                let isFormGroupValid: boolean = this.checkFormGroupValidity();
-                if (isFormGroupValid == false) return;
-                this.authService.registrationVerification(this.model).subscribe(() => {
-                    this.messageService.successMessage("You have successfully verified your account.")
-                    this.router.navigate(['/']);
-                });
-            }else{
-                this.messageService.warningMessage("You didn't came from verification link.")
-            }
-        });
+        this.init(new VerificationTokenRequest({email: this.email}));
     }
     
-    init(model: Registration){
+    init(model: VerificationTokenRequest){
         this.initFormGroup(model);
     }
 
-    register() {
-        let isFormGroupValid: boolean = this.checkFormGroupValidity();
-        if (isFormGroupValid == false) return;
-        // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService.register(this.model).subscribe((res)=>{
-
+    resendVerificationToken(){
+        this.authService.sendRegistrationVerificationEmail({email: this.email, password: this.password}).subscribe((res) => {
+            if (res.status == RegistrationResultStatusCodes.UserDoesNotExistAndDoesNotHaveValidToken) {
+                this.messageService.successMessage("Successfully sent verification code.")
+            }
+            else {
+                this.messageService.warningMessage(res.message);
+            }
         });
     }
 
-    parseToken(token: string) {
-        const payload = token.split('.')[1];  // Extract the payload part
-        const decodedPayload = JSON.parse(atob(payload));  // Decode and parse it
-        this.email = decodedPayload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-    }
-
-    onGoogleSignIn(){
-        
-    }
-
-    goToRegistrationPage(){
-        
-    }
-
-    resendVerificationToken(){
-
+    onCodeSubmit(){
+        let isValid: boolean = this.checkFormGroupValidity();
+    
+        if(isValid){
+            this.authService.register(this.model).subscribe(() => {
+                this.messageService.successMessage("You have successfully verified your account.")
+                this.router.navigate(['/']);
+            });
+        }
     }
 
     ngOnDestroy(): void {

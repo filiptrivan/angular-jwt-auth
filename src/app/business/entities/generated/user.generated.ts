@@ -3,7 +3,9 @@ import { Role } from "./role.generated";
 
 export class User extends BaseEntity
 {
-    email?: string;
+    testColumnForGrid?: string;
+	roles?: Role[];
+	email?: string;
 	password?: string;
 	hasLoggedInWithExternalProvider?: boolean;
 	numberOfFailedAttemptsInARow?: number;
@@ -12,12 +14,12 @@ export class User extends BaseEntity
 	id?: number;
 	createdAt?: Date;
 	modifiedAt?: Date;
-	testColumnForGrid?: string;
-	roles?: Role[];
 
     constructor(
     {
-        email,
+        testColumnForGrid,
+		roles,
+		email,
 		password,
 		hasLoggedInWithExternalProvider,
 		numberOfFailedAttemptsInARow,
@@ -25,11 +27,11 @@ export class User extends BaseEntity
 		version,
 		id,
 		createdAt,
-		modifiedAt,
-		testColumnForGrid,
-		roles
+		modifiedAt
     }:{
-        email?: string;
+        testColumnForGrid?: string;
+		roles?: Role[];
+		email?: string;
 		password?: string;
 		hasLoggedInWithExternalProvider?: boolean;
 		numberOfFailedAttemptsInARow?: number;
@@ -37,14 +39,14 @@ export class User extends BaseEntity
 		version?: number;
 		id?: number;
 		createdAt?: Date;
-		modifiedAt?: Date;
-		testColumnForGrid?: string;
-		roles?: Role[];     
+		modifiedAt?: Date;     
     } = {}
     ) {
         super('User'); 
 
-        this.email = email;
+        this.testColumnForGrid = testColumnForGrid;
+		this.roles = roles;
+		this.email = email;
 		this.password = password;
 		this.hasLoggedInWithExternalProvider = hasLoggedInWithExternalProvider;
 		this.numberOfFailedAttemptsInARow = numberOfFailedAttemptsInARow;
@@ -53,8 +55,6 @@ export class User extends BaseEntity
 		this.id = id;
 		this.createdAt = createdAt;
 		this.modifiedAt = modifiedAt;
-		this.testColumnForGrid = testColumnForGrid;
-		this.roles = roles;
     }
 
 }
